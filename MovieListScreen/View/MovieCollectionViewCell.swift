@@ -32,6 +32,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupViews()
     }
     
     @available(*, unavailable)
@@ -40,7 +41,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     }
     
     func fillCell(with movie: MovieModel) {
-        
+        movieTitle.text = movie.title
     }
     
 }
@@ -49,6 +50,19 @@ private extension MovieCollectionViewCell {
     func setupViews() {
         contentView.addSubview(moviePoster)
         contentView.addSubview(movieTitle)
-
+        
+        let constraints = [
+            moviePoster.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            moviePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            moviePoster.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            moviePoster.bottomAnchor.constraint(equalTo: movieTitle.topAnchor, constant: -4),
+            
+            movieTitle.leadingAnchor.constraint(equalTo: moviePoster.leadingAnchor, constant: 4),
+            movieTitle.trailingAnchor.constraint(equalTo: moviePoster.trailingAnchor),
+            movieTitle.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+        
     }
 }

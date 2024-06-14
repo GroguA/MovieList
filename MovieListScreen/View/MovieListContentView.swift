@@ -10,9 +10,8 @@ import UIKit
 class MovieListContentView: UIView {
     
     lazy var moviesCollectionView: UICollectionView = {
-        let viewLayout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: viewLayout)
-        collectionView.backgroundColor = .systemBackground
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
+        collectionView.backgroundColor = .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(
             MovieCollectionViewCell.self,
@@ -21,16 +20,43 @@ class MovieListContentView: UIView {
         return collectionView
     }()
     
+    var collectionViewDataSource: MovieListCollectionViewDataSource?
+        
     init(delegate: UICollectionViewDelegate) {
         super.init(frame: .zero)
+        moviesCollectionView.delegate = delegate
+        setupView()
+        setupDataSource()
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+}
+
+private extension MovieListContentView {
+    func setupView() {
+        backgroundColor = .white
+        addSubview(moviesCollectionView)
+        
+        let constraints = [
+            moviesCollectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            moviesCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            moviesCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            moviesCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
     
-    private func createCompositionalLayout() -> UICollectionViewLayout {
+    func setupDataSource() {
+        collectionViewDataSource = MovieListCollectionViewDataSource(collectionView: moviesCollectionView)
+        collectionViewDataSource?.makeDataSource()
+    }
+    
+    func createCompositionalLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
