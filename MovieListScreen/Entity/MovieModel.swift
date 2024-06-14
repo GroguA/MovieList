@@ -8,5 +8,5 @@
 import Foundation
 
 struct MovieModel: Hashable {
-    
+    let title: String
 }
