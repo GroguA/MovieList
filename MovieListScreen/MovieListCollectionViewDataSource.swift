@@ -11,7 +11,7 @@ enum Section {
     case main
 }
 
-class MovieListCollectionViewDataSource {
+final class MovieListCollectionViewDataSource {
     typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieModel>
 

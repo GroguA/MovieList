@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol MovieListInteractorProtocol {
+protocol IMovieListInteractor {
     func fetchMovies(completion: @escaping ([MovieModel]) -> Void)
 }
 
-final class MovieListInteractorImp: MovieListInteractorProtocol {
+final class MovieListInteractor: IMovieListInteractor {
     func fetchMovies(completion: @escaping ([MovieModel]) -> Void) {
         let movieModel = MovieModel(title: "hello")
         completion([movieModel])

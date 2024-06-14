@@ -7,25 +7,25 @@
 
 import Foundation
 
-protocol MovieListPresenterProtocol {
-    func didLoad(ui: MovieListControllerProtocol)
+protocol IMovieListPresenter {
+    func didLoad(ui: IMovieListController)
     func movieDidChoose(at index: Int)
 }
 
-class MovieListPresenterImp {
-    private weak var ui: MovieListControllerProtocol?
+final class MovieListPresenter {
+    private weak var ui: IMovieListController?
     
     private var movies = [MovieModel]()
     
-    private let interactor: MovieListInteractorProtocol
+    private let interactor: IMovieListInteractor
     
-    init(interactor: MovieListInteractorProtocol) {
+    init(interactor: IMovieListInteractor) {
         self.interactor = interactor
     }
 }
 
-extension MovieListPresenterImp: MovieListPresenterProtocol {
-    func didLoad(ui: MovieListControllerProtocol) {
+extension MovieListPresenter: IMovieListPresenter {
+    func didLoad(ui: IMovieListController) {
         self.ui = ui
         interactor.fetchMovies { movies in
             self.movies = movies

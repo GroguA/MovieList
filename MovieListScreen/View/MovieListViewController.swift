@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol MovieListControllerProtocol: AnyObject {
+protocol IMovieListController: AnyObject {
     func showMovies(_ movies: [MovieModel])
 }
 
@@ -15,9 +15,9 @@ class MovieListViewController: UIViewController {
     
     private lazy var contentView = MovieListContentView(delegate: self)
             
-    private let presenter: MovieListPresenterProtocol
+    private let presenter: IMovieListPresenter
     
-    init(presenter: MovieListPresenterProtocol) {
+    init(presenter: IMovieListPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -47,7 +47,7 @@ private extension MovieListViewController {
 
 }
 
-extension MovieListViewController: MovieListControllerProtocol {
+extension MovieListViewController: IMovieListController {
     func showMovies(_ movies: [MovieModel]) {
         contentView.collectionViewDataSource?.applySnapshot(movies: movies)
     }
