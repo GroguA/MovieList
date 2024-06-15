@@ -46,6 +46,9 @@ extension MovieListInteractor: IMovieListInteractor {
     }
     
     func loadMoreMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
+        if isSearching {
+            return
+        }
         currentPage += 1
         serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
             switch result {
