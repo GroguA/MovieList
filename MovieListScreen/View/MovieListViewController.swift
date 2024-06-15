@@ -14,8 +14,10 @@ protocol IMovieListController: AnyObject {
 class MovieListViewController: UIViewController {
     
     private lazy var contentView = MovieListContentView(delegate: self)
-            
+    
     private let presenter: IMovieListPresenter
+    
+    private lazy var dataSource = contentView.collectionViewDataSource?.dataSource
     
     init(presenter: IMovieListPresenter) {
         self.presenter = presenter
@@ -30,21 +32,21 @@ class MovieListViewController: UIViewController {
     override func loadView() {
         view = contentView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.didLoad(ui: self)
         setupView()
     }
-
-
+    
 }
 
 private extension MovieListViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
+        navigationItem.title = "Popular movies"
     }
-
+    
 }
 
 extension MovieListViewController: IMovieListController {
@@ -55,5 +57,14 @@ extension MovieListViewController: IMovieListController {
 }
 
 extension MovieListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let movies = dataSource?.snapshot().itemIdentifiers else { return }
+        if (indexPath.item == movies.count - 1) {
+            presenter.moviesScrolled()
+        }
+    }
 }

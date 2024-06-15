@@ -10,6 +10,7 @@ import Foundation
 protocol IMovieListPresenter {
     func didLoad(ui: IMovieListController)
     func movieDidChoose(at index: Int)
+    func moviesScrolled()
 }
 
 final class MovieListPresenter {
@@ -27,13 +28,32 @@ final class MovieListPresenter {
 extension MovieListPresenter: IMovieListPresenter {
     func didLoad(ui: IMovieListController) {
         self.ui = ui
-        interactor.fetchMovies { movies in
-            self.movies = movies
-            ui.showMovies(movies)
+        interactor.fetchMovies { result in
+            switch result {
+            case .success(let movies):
+                self.movies = movies
+                self.ui?.showMovies(movies)
+            case .failure(_):
+                break
+            }
+            
         }
     }
     
     func movieDidChoose(at index: Int) {
         
     }
+    
+    func moviesScrolled() {
+        interactor.loadMoreMovies { result in
+            switch result {
+            case .success(let movies):
+                self.movies += movies
+                self.ui?.showMovies(movies)
+            case .failure(_):
+                break
+            }
+        }
+    }
 }
+
