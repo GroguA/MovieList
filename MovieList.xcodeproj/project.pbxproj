@@ -30,6 +30,7 @@
 		7CABAA352C1DDC7100DB98F0 /* FavoriteMovieService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA342C1DDC7100DB98F0 /* FavoriteMovieService.swift */; };
 		7CABAA372C1DDCAA00DB98F0 /* FavoriteMovieCoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA362C1DDCAA00DB98F0 /* FavoriteMovieCoreDataModel.swift */; };
 		7CABAA392C1DE04900DB98F0 /* CoreDataErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA382C1DE04900DB98F0 /* CoreDataErrors.swift */; };
+		7CABAA3C2C1DE5C600DB98F0 /* MovieListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA3B2C1DE5C600DB98F0 /* MovieListRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		7CABAA342C1DDC7100DB98F0 /* FavoriteMovieService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMovieService.swift; sourceTree = "<group>"; };
 		7CABAA362C1DDCAA00DB98F0 /* FavoriteMovieCoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMovieCoreDataModel.swift; sourceTree = "<group>"; };
 		7CABAA382C1DE04900DB98F0 /* CoreDataErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataErrors.swift; sourceTree = "<group>"; };
+		7CABAA3B2C1DE5C600DB98F0 /* MovieListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 		7C03368A2C1B3555009BF355 /* MovieListScreen */ = {
 			isa = PBXGroup;
 			children = (
+				7CABAA3A2C1DE5B500DB98F0 /* Router */,
 				7CABAA332C1DDACF00DB98F0 /* PersistentStoreLayer */,
 				7CABAA252C1CAE5000DB98F0 /* NetworkLayer */,
 				7CABAA242C1CADBC00DB98F0 /* Assemblies */,
@@ -206,6 +209,14 @@
 			path = PersistentStoreLayer;
 			sourceTree = "<group>";
 		};
+		7CABAA3A2C1DE5B500DB98F0 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				7CABAA3B2C1DE5C600DB98F0 /* MovieListRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -281,6 +292,7 @@
 				7CABAA2B2C1CB45200DB98F0 /* JsonDecoderWrapper.swift in Sources */,
 				7CABAA322C1DBB8600DB98F0 /* ArrayExtension.swift in Sources */,
 				7CABAA2D2C1CC8F100DB98F0 /* ImageDownloader.swift in Sources */,
+				7CABAA3C2C1DE5C600DB98F0 /* MovieListRouter.swift in Sources */,
 				7C03369E2C1B3E8D009BF355 /* MovieListCollectionViewDataSource.swift in Sources */,
 				7CABAA2F2C1D088B00DB98F0 /* NetworkErrors.swift in Sources */,
 				7C03369C2C1B3D8E009BF355 /* MovieModel.swift in Sources */,

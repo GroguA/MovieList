@@ -20,6 +20,24 @@ class MovieListContentView: UIView {
         return collectionView
     }()
     
+    lazy var showFavoriteMoviesButton: UIButton = {
+        let button = UIButton()
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 35, weight: .light, scale: .default)
+        let largeBoldHeart = UIImage(systemName: "heart.fill", withConfiguration: largeConfig)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(largeBoldHeart, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageView?.tintColor = .red
+        button.addTarget(self, action: #selector(showFavoriteMoviesButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.searchBar.sizeToFit()
+        return searchController
+    }()
+    
     var collectionViewDataSource: MovieListCollectionViewDataSource?
     
     init(delegate: UICollectionViewDelegate) {
@@ -45,7 +63,7 @@ private extension MovieListContentView {
             moviesCollectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             moviesCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             moviesCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            moviesCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+            moviesCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -71,5 +89,9 @@ private extension MovieListContentView {
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         return layout
+    }
+    
+    @objc func showFavoriteMoviesButtonTapped() {
+        
     }
 }

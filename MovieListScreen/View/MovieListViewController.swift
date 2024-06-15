@@ -19,6 +19,8 @@ class MovieListViewController: UIViewController {
     
     private lazy var dataSource = contentView.collectionViewDataSource?.dataSource
     
+    private lazy var searchController = contentView.searchController
+    
     init(presenter: IMovieListPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -37,15 +39,22 @@ class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.didLoad(ui: self)
-        setupView()
+        setupViews()
     }
     
 }
 
 private extension MovieListViewController {
-    func setupView() {
+    func setupViews() {
         view.backgroundColor = .systemBackground
         navigationItem.title = "Popular movies"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: contentView.showFavoriteMoviesButton)
+        
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.hidesNavigationBarDuringPresentation = false
+        navigationItem.titleView = searchController.searchBar
+        
     }
     
 }
@@ -69,5 +78,20 @@ extension MovieListViewController: UICollectionViewDelegate {
         if (indexPath.item == movies.count - 1) {
             presenter.moviesScrolled()
         }
+    }
+}
+
+extension MovieListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        let optEncodedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        guard let encodedText = optEncodedText else { return }
+        presenter.searchStarted(query: encodedText)
+    }
+}
+
+extension MovieListViewController:  UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter.searchStopped()
     }
 }

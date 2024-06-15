@@ -13,6 +13,8 @@ protocol IMovieListPresenter {
     func moviesScrolled()
     func dislikeMovie(at index: Int)
     func likeMovie(at index: Int)
+    func searchStarted(query: String)
+    func searchStopped()
 }
 
 final class MovieListPresenter {
@@ -77,6 +79,25 @@ extension MovieListPresenter: IMovieListPresenter {
             }
         }
     }
+    
+    func searchStarted(query: String) {
+        interactor.fetchMoviesByQuery(query) { result in
+            switch result {
+            case .success(let movies):
+                self.ui?.showMovies(movies)
+            case .failure(_):
+                break
+            }
+        }
+    }
+    
+    func searchStopped() {
+        interactor.searchStopped()
+        interactor.updateMovies { movies in
+            self.ui?.showMovies(movies)
+        }
+    }
+
 }
 
 

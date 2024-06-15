@@ -13,14 +13,19 @@ protocol IMovieListInteractor {
     func dislikeMovie(at index: Int)
     func likeMovie(at index: Int)
     func updateMovies(completion: (([MovieModel]) -> Void))
-    
+    func fetchMoviesByQuery(_ query: String, completion: @escaping (Result<[MovieModel], Error>) -> Void)
+    func searchStopped()
 }
 
 final class MovieListInteractor {
     
     private var currentPage = 1
     
-    private var moviesBeforeSearchStarted: [MovieModel] = [MovieModel]()
+    private var moviesBeforeSearchStarted = [MovieModel]()
+    
+    private var isSearching = false
+    
+    private var searchedMovies = [MovieModel]()
     
     private let networkService = MovieNetworkService()
     
@@ -56,35 +61,74 @@ extension MovieListInteractor: IMovieListInteractor {
         }
     }
     
-    func dislikeMovie(at index: Int) {
-        moviesBeforeSearchStarted[index].isMovieFavorite = false
-        do {
-            try favoriteMoviesService.removeMovieFromFavorites(movieId: moviesBeforeSearchStarted[index].id)
-        } catch {
-            // ignore
+    func fetchMoviesByQuery(_ query: String, completion: @escaping (Result<[MovieModel], Error>) -> Void) {
+        if query.isEmpty {
+            return
+        }
+        isSearching = true
+        networkService.searchMovieByQuery(query) { result in
+            switch result {
+            case .success(let movies):
+                let mappedMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
+                completion(.success(mappedMovies))
+                self.searchedMovies = mappedMovies
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
     
+    func dislikeMovie(at index: Int) {
+        let movie: MovieModel
+           
+           if isSearching {
+               searchedMovies[index].isMovieFavorite = false
+               movie = searchedMovies[index]
+           } else {
+               movie = moviesBeforeSearchStarted[index]
+               moviesBeforeSearchStarted[index].isMovieFavorite = false
+           }
+           do {
+               try favoriteMoviesService.removeMovieFromFavorites(movieId: movie.id)
+           } catch {
+
+           }
+    }
+    
     func likeMovie(at index: Int) {
-        moviesBeforeSearchStarted[index].isMovieFavorite = true
+        let movie: MovieModel
         
-        let clickedMovie = moviesBeforeSearchStarted[index]
+        if isSearching {
+            searchedMovies[index].isMovieFavorite = true
+            movie = searchedMovies[index]
+        } else {
+            moviesBeforeSearchStarted[index].isMovieFavorite = true
+            movie = moviesBeforeSearchStarted[index]
+        }
         
         let coreDataModel = FavoriteMovieCoreDataModel(
-            id: clickedMovie.id,
-            title: clickedMovie.title,
-            pathToImage: clickedMovie.pathToImage
+            id: movie.id,
+            title: movie.title,
+            pathToImage: movie.pathToImage
         )
         
         do {
             try favoriteMoviesService.addMovieToFavorites(movieToAdd: coreDataModel)
         } catch {
-            
+
         }
     }
     
     func updateMovies(completion: (([MovieModel]) -> Void)) {
-        completion(moviesBeforeSearchStarted)
+        if isSearching {
+            completion(searchedMovies)
+        } else {
+            completion(moviesBeforeSearchStarted)
+        }
+    }
+    
+    func searchStopped() {
+        isSearching = false
     }
 }
 

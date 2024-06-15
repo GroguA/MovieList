@@ -12,7 +12,6 @@ protocol IFavoriteMoviesService {
     func addMovieToFavorites(movieToAdd: FavoriteMovieCoreDataModel) throws
     func removeMovieFromFavorites(movieId: Int) throws
     func fetchFavoriteMovies() throws -> [FavoriteMovieCoreDataModel]
-
 }
 
 final class FavoriteMovieService {
@@ -74,7 +73,6 @@ extension FavoriteMovieService: IFavoriteMoviesService {
         
         do {
             try managedContext.save()
-            print("deleted")
         } catch {
             throw CoreDataErrors.runtimeError("Could note delete movie")
         }
