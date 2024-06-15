@@ -21,6 +21,12 @@
 		7C0336A02C1B3FE5009BF355 /* MovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03369F2C1B3FE5009BF355 /* MovieListInteractor.swift */; };
 		7C0336A42C1B40C5009BF355 /* MovieListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0336A32C1B40C5009BF355 /* MovieListPresenter.swift */; };
 		7CABAA222C1C706500DB98F0 /* MovieListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA212C1C706500DB98F0 /* MovieListAssembly.swift */; };
+		7CABAA272C1CAE7D00DB98F0 /* MovieNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */; };
+		7CABAA292C1CAF3600DB98F0 /* MovieScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA282C1CAF3600DB98F0 /* MovieScheme.swift */; };
+		7CABAA2B2C1CB45200DB98F0 /* JsonDecoderWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA2A2C1CB45100DB98F0 /* JsonDecoderWrapper.swift */; };
+		7CABAA2D2C1CC8F100DB98F0 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA2C2C1CC8F100DB98F0 /* ImageDownloader.swift */; };
+		7CABAA2F2C1D088B00DB98F0 /* NetworkErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA2E2C1D088B00DB98F0 /* NetworkErrors.swift */; };
+		7CABAA322C1DBB8600DB98F0 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA312C1DBB8600DB98F0 /* ArrayExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +46,12 @@
 		7C03369F2C1B3FE5009BF355 /* MovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListInteractor.swift; sourceTree = "<group>"; };
 		7C0336A32C1B40C5009BF355 /* MovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListPresenter.swift; sourceTree = "<group>"; };
 		7CABAA212C1C706500DB98F0 /* MovieListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListAssembly.swift; sourceTree = "<group>"; };
+		7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieNetworkService.swift; sourceTree = "<group>"; };
+		7CABAA282C1CAF3600DB98F0 /* MovieScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieScheme.swift; sourceTree = "<group>"; };
+		7CABAA2A2C1CB45100DB98F0 /* JsonDecoderWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonDecoderWrapper.swift; sourceTree = "<group>"; };
+		7CABAA2C2C1CC8F100DB98F0 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		7CABAA2E2C1D088B00DB98F0 /* NetworkErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrors.swift; sourceTree = "<group>"; };
+		7CABAA312C1DBB8600DB98F0 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +68,7 @@
 		7C0336672C1B34E1009BF355 = {
 			isa = PBXGroup;
 			children = (
+				7CABAA302C1DBB7100DB98F0 /* Extensions */,
 				7C03368C2C1B3573009BF355 /* CoreData */,
 				7C03368A2C1B3555009BF355 /* MovieListScreen */,
 				7C0336722C1B34E1009BF355 /* MovieList */,
@@ -87,6 +100,7 @@
 		7C03368A2C1B3555009BF355 /* MovieListScreen */ = {
 			isa = PBXGroup;
 			children = (
+				7CABAA252C1CAE5000DB98F0 /* NetworkLayer */,
 				7CABAA242C1CADBC00DB98F0 /* Assemblies */,
 				7CABAA232C1CAD9800DB98F0 /* DataSource */,
 				7C0336A22C1B40B8009BF355 /* Presenter */,
@@ -119,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				7C03369A2C1B3D8E009BF355 /* MovieModel.swift */,
+				7CABAA282C1CAF3600DB98F0 /* MovieScheme.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -153,6 +168,25 @@
 				7CABAA212C1C706500DB98F0 /* MovieListAssembly.swift */,
 			);
 			path = Assemblies;
+			sourceTree = "<group>";
+		};
+		7CABAA252C1CAE5000DB98F0 /* NetworkLayer */ = {
+			isa = PBXGroup;
+			children = (
+				7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */,
+				7CABAA2A2C1CB45100DB98F0 /* JsonDecoderWrapper.swift */,
+				7CABAA2C2C1CC8F100DB98F0 /* ImageDownloader.swift */,
+				7CABAA2E2C1D088B00DB98F0 /* NetworkErrors.swift */,
+			);
+			path = NetworkLayer;
+			sourceTree = "<group>";
+		};
+		7CABAA302C1DBB7100DB98F0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7CABAA312C1DBB8600DB98F0 /* ArrayExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,17 +260,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CABAA2B2C1CB45200DB98F0 /* JsonDecoderWrapper.swift in Sources */,
+				7CABAA322C1DBB8600DB98F0 /* ArrayExtension.swift in Sources */,
+				7CABAA2D2C1CC8F100DB98F0 /* ImageDownloader.swift in Sources */,
 				7C03369E2C1B3E8D009BF355 /* MovieListCollectionViewDataSource.swift in Sources */,
+				7CABAA2F2C1D088B00DB98F0 /* NetworkErrors.swift in Sources */,
 				7C03369C2C1B3D8E009BF355 /* MovieModel.swift in Sources */,
 				7C0336982C1B3D80009BF355 /* MovieListContentView.swift in Sources */,
 				7C0336A02C1B3FE5009BF355 /* MovieListInteractor.swift in Sources */,
 				7C0336782C1B34E1009BF355 /* MovieListViewController.swift in Sources */,
 				7C0336742C1B34E1009BF355 /* AppDelegate.swift in Sources */,
 				7C0336992C1B3D80009BF355 /* MovieCollectionViewCell.swift in Sources */,
+				7CABAA272C1CAE7D00DB98F0 /* MovieNetworkService.swift in Sources */,
 				7C03367E2C1B34E1009BF355 /* MovieList.xcdatamodeld in Sources */,
 				7C0336762C1B34E1009BF355 /* SceneDelegate.swift in Sources */,
 				7CABAA222C1C706500DB98F0 /* MovieListAssembly.swift in Sources */,
 				7C0336A42C1B40C5009BF355 /* MovieListPresenter.swift in Sources */,
+				7CABAA292C1CAF3600DB98F0 /* MovieScheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

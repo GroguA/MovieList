@@ -24,11 +24,11 @@ class MovieCollectionViewCell: UICollectionViewCell {
         title.font = .systemFont(ofSize: 17, weight: .bold)
         title.translatesAutoresizingMaskIntoConstraints = false
         title.textAlignment = .center
-        title.textColor = .black
         title.numberOfLines = 0
         return title
     }()
     
+    private let imageDownloader = ImageDownloader()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,7 +41,9 @@ class MovieCollectionViewCell: UICollectionViewCell {
     }
     
     func fillCell(with movie: MovieModel) {
+        moviePoster.image = nil
         movieTitle.text = movie.title
+        imageDownloader.fetchImage(pathToImage: movie.pathToImage, imageView: moviePoster)
     }
     
 }

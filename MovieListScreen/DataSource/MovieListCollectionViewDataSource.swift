@@ -14,15 +14,15 @@ enum Section {
 final class MovieListCollectionViewDataSource {
     typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieModel>
-
-    private var dataSource: DataSource?
+    
+    var dataSource: DataSource?
     
     private var collectionView: UICollectionView
     
     init(collectionView: UICollectionView) {
         self.collectionView = collectionView
     }
-
+    
     func makeDataSource() {
         dataSource = DataSource(
             collectionView: collectionView,
@@ -36,7 +36,7 @@ final class MovieListCollectionViewDataSource {
                 return cell
             })
     }
-
+    
     func applySnapshot(movies: [MovieModel], animatingDifferences: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])

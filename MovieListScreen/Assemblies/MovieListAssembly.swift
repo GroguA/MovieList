@@ -8,7 +8,7 @@
 import UIKit
 
 enum MovieListAssembly {
-    static func createCarsListModule() -> UIViewController {
+    static func createMovieListModule() -> UIViewController {
         let interactor = MovieListInteractor()
         let presenter = MovieListPresenter(interactor: interactor)
         let view = MovieListViewController(presenter: presenter)

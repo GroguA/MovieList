@@ -11,7 +11,7 @@ class MovieListContentView: UIView {
     
     lazy var moviesCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(
             MovieCollectionViewCell.self,
@@ -21,7 +21,7 @@ class MovieListContentView: UIView {
     }()
     
     var collectionViewDataSource: MovieListCollectionViewDataSource?
-        
+    
     init(delegate: UICollectionViewDelegate) {
         super.init(frame: .zero)
         moviesCollectionView.delegate = delegate
@@ -33,7 +33,7 @@ class MovieListContentView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
 
 private extension MovieListContentView {
