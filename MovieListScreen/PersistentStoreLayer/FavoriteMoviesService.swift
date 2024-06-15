@@ -28,7 +28,7 @@ final class FavoriteMovieService {
 
 extension FavoriteMovieService: IFavoriteMoviesService {
     func addMovieToFavorites(movieToAdd: FavoriteMovieCoreDataModel) throws {
-                
+        
         let managedContext = persistentContainer.viewContext
         
         guard let entity = NSEntityDescription.entity(forEntityName: "Movies", in: managedContext) else {
@@ -47,9 +47,9 @@ extension FavoriteMovieService: IFavoriteMoviesService {
             throw CoreDataErrors.runtimeError("Could not save movie")
         }
     }
-
+    
     func removeMovieFromFavorites(movieId: Int) throws {
-                
+        
         let managedContext = persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Movies")
@@ -59,14 +59,14 @@ extension FavoriteMovieService: IFavoriteMoviesService {
         fetchRequest.predicate = predicate
         
         var moviesToDelete = [NSManagedObject]()
-
+        
         do {
             let movieNsManagedObjects = try managedContext.fetch(fetchRequest)
             moviesToDelete = movieNsManagedObjects
         } catch {
             throw CoreDataErrors.runtimeError("Failed to fetch movies")
         }
-
+        
         moviesToDelete.forEach { movie in
             managedContext.delete(movie)
         }
@@ -90,8 +90,8 @@ extension FavoriteMovieService: IFavoriteMoviesService {
             let movieManagedObjects = try managedContext.fetch(fetchRequest)
             movieManagedObjects.forEach({ movieManagedObject in
                 guard let id = movieManagedObject.value(forKey: "id") as? Int,
-                        let title = movieManagedObject.value(forKey: "title") as? String,
-                        let path = movieManagedObject.value(forKey: "pathToImage") as? String else {
+                      let title = movieManagedObject.value(forKey: "title") as? String,
+                      let path = movieManagedObject.value(forKey: "pathToImage") as? String else {
                     return
                 }
                 let favoriteMovie = FavoriteMovieCoreDataModel(id: id, title: title, pathToImage: path)
