@@ -51,7 +51,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     private var dislikeAction: (() -> Void)? = nil
     private var likeAction: (() -> Void)? = nil
     
-    private let imageDownloader = ImageDownloader()
+    private let serviceLocator = ServiceLocator.shared
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -85,7 +85,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
         moviePoster.image = nil
         movieTitle.text = movie.title
         
-        imageDownloader.fetchImage(pathToImage: movie.pathToImage, imageView: moviePoster)
+        serviceLocator.imageDownloader.fetchImage(pathToImage: movie.pathToImage, imageView: moviePoster)
     }
     
 }

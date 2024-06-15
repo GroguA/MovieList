@@ -8,7 +8,6 @@
 import UIKit
 
 final class ImageDownloader {
-    static let shared = ImageDownloader()
     
     private let session = URLSession.shared
     

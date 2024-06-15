@@ -27,15 +27,13 @@ final class MovieListInteractor {
     
     private var searchedMovies = [MovieModel]()
     
-    private let networkService = MovieNetworkService()
-    
-    private let favoriteMoviesService = FavoriteMovieService()
+    private let serviceLocator = ServiceLocator.shared
     
 }
 
 extension MovieListInteractor: IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
-        networkService.getPopularMovies(page: currentPage) { result in
+        serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
             switch result {
             case .success(let movies):
                 let mappedMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
@@ -49,7 +47,7 @@ extension MovieListInteractor: IMovieListInteractor {
     
     func loadMoreMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
         currentPage += 1
-        networkService.getPopularMovies(page: currentPage) { result in
+        serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
             switch result {
             case .success(let movies):
                 let newMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
@@ -66,7 +64,7 @@ extension MovieListInteractor: IMovieListInteractor {
             return
         }
         isSearching = true
-        networkService.searchMovieByQuery(query) { result in
+        serviceLocator.networkService.searchMovieByQuery(query) { result in
             switch result {
             case .success(let movies):
                 let mappedMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
@@ -80,19 +78,19 @@ extension MovieListInteractor: IMovieListInteractor {
     
     func dislikeMovie(at index: Int) {
         let movie: MovieModel
-           
-           if isSearching {
-               searchedMovies[index].isMovieFavorite = false
-               movie = searchedMovies[index]
-           } else {
-               movie = moviesBeforeSearchStarted[index]
-               moviesBeforeSearchStarted[index].isMovieFavorite = false
-           }
-           do {
-               try favoriteMoviesService.removeMovieFromFavorites(movieId: movie.id)
-           } catch {
-
-           }
+        
+        if isSearching {
+            searchedMovies[index].isMovieFavorite = false
+            movie = searchedMovies[index]
+        } else {
+            movie = moviesBeforeSearchStarted[index]
+            moviesBeforeSearchStarted[index].isMovieFavorite = false
+        }
+        do {
+            try serviceLocator.favoriteMoviesService.removeMovieFromFavorites(movieId: movie.id)
+        } catch {
+            
+        }
     }
     
     func likeMovie(at index: Int) {
@@ -113,9 +111,9 @@ extension MovieListInteractor: IMovieListInteractor {
         )
         
         do {
-            try favoriteMoviesService.addMovieToFavorites(movieToAdd: coreDataModel)
+            try serviceLocator.favoriteMoviesService.addMovieToFavorites(movieToAdd: coreDataModel)
         } catch {
-
+            
         }
     }
     

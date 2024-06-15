@@ -14,7 +14,7 @@ protocol IFavoriteMoviesService {
     func fetchFavoriteMovies() throws -> [FavoriteMovieCoreDataModel]
 }
 
-final class FavoriteMovieService {
+final class FavoriteMoviesService {
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "MovieList")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -26,7 +26,7 @@ final class FavoriteMovieService {
     }()
 }
 
-extension FavoriteMovieService: IFavoriteMoviesService {
+extension FavoriteMoviesService: IFavoriteMoviesService {
     func addMovieToFavorites(movieToAdd: FavoriteMovieCoreDataModel) throws {
         
         let managedContext = persistentContainer.viewContext
