@@ -24,6 +24,8 @@ final class MovieListInteractor {
     
     private let networkService = MovieNetworkService()
     
+    private let favoriteMoviesService = FavoriteMovieService()
+    
 }
 
 extension MovieListInteractor: IMovieListInteractor {
@@ -56,10 +58,29 @@ extension MovieListInteractor: IMovieListInteractor {
     
     func dislikeMovie(at index: Int) {
         moviesBeforeSearchStarted[index].isMovieFavorite = false
+        do {
+            try favoriteMoviesService.removeMovieFromFavorites(movieId: moviesBeforeSearchStarted[index].id)
+        } catch {
+            // ignore
+        }
     }
     
     func likeMovie(at index: Int) {
         moviesBeforeSearchStarted[index].isMovieFavorite = true
+        
+        let clickedMovie = moviesBeforeSearchStarted[index]
+        
+        let coreDataModel = FavoriteMovieCoreDataModel(
+            id: clickedMovie.id,
+            title: clickedMovie.title,
+            pathToImage: clickedMovie.pathToImage
+        )
+        
+        do {
+            try favoriteMoviesService.addMovieToFavorites(movieToAdd: coreDataModel)
+        } catch {
+            
+        }
     }
     
     func updateMovies(completion: (([MovieModel]) -> Void)) {
