@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+extension Array where Element: Hashable {
+    func unique() -> [Element] {
+        var unique = Set<Element>()
+        return filter { unique.insert($0).inserted }
+    }
+}
