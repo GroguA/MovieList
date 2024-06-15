@@ -8,5 +8,7 @@
 import Foundation
 
 struct MovieModel: Hashable {
+    let id: Int
     let title: String
+    let pathToImage: String
 }

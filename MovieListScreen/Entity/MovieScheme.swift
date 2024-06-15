@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+struct MoviesResponseScheme: Codable {
+    let results: [MovieScheme]
+}
+
+struct MovieScheme: Codable {
+    let id: Int
+    let title: String
+    let posterPath: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case posterPath = "poster_path"
+        case id, title
+    }
+}
