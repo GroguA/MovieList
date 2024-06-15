@@ -22,6 +22,7 @@ class MovieListViewController: UIViewController {
     init(presenter: IMovieListPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
+        contentView.collectionViewDataSource?.presenter = presenter
     }
     
     @available(*, unavailable)
@@ -51,7 +52,9 @@ private extension MovieListViewController {
 
 extension MovieListViewController: IMovieListController {
     func showMovies(_ movies: [MovieModel]) {
-        contentView.collectionViewDataSource?.applySnapshot(movies: movies)
+        DispatchQueue.main.async {
+            self.contentView.collectionViewDataSource?.applySnapshot(movies: movies)
+        }
     }
     
 }

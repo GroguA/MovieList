@@ -11,6 +11,8 @@ protocol IMovieListPresenter {
     func didLoad(ui: IMovieListController)
     func movieDidChoose(at index: Int)
     func moviesScrolled()
+    func dislikeMovie(at index: Int)
+    func likeMovie(at index: Int)
 }
 
 final class MovieListPresenter {
@@ -18,7 +20,7 @@ final class MovieListPresenter {
     
     private var movies = [MovieModel]()
     
-    private let interactor: IMovieListInteractor
+    private var interactor: IMovieListInteractor
     
     init(interactor: IMovieListInteractor) {
         self.interactor = interactor
@@ -55,5 +57,26 @@ extension MovieListPresenter: IMovieListPresenter {
             }
         }
     }
-}
+    
+    func dislikeMovie(at index: Int) {
+        interactor.dislikeMovie(at: index)
+        interactor.updateMovies { [weak self] movies in
+            self?.movies = movies
+            DispatchQueue.main.async {
+                self?.ui?.showMovies(movies)
+            }
+        }
+    }
+        
+        func likeMovie(at index: Int) {
+            interactor.likeMovie(at: index)
+            interactor.updateMovies { [weak self] movies in
+                self?.movies = movies
+                DispatchQueue.main.async {
+                    self?.ui?.showMovies(movies)
+                }
+            }
+        }
+    }
+    
 

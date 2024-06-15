@@ -10,10 +10,14 @@ import Foundation
 protocol IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
     func loadMoreMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
+    func dislikeMovie(at index: Int)
+    func likeMovie(at index: Int)
+    func updateMovies(completion: (([MovieModel]) -> Void))
+
 }
 
 final class MovieListInteractor {
-    
+            
     private var currentPage = 1
     
     private var moviesBeforeSearchStarted: [MovieModel] = [MovieModel]()
@@ -49,6 +53,18 @@ extension MovieListInteractor: IMovieListInteractor {
             }
         }
     }
+    
+    func dislikeMovie(at index: Int) {
+        moviesBeforeSearchStarted[index].isMovieFavorite = false
+    }
+    
+    func likeMovie(at index: Int) {
+        moviesBeforeSearchStarted[index].isMovieFavorite = true
+    }
+    
+    func updateMovies(completion: (([MovieModel]) -> Void)) {
+        completion(moviesBeforeSearchStarted)
+    }
 }
 
 private extension MovieListInteractor {
@@ -61,7 +77,10 @@ private extension MovieListInteractor {
             return MovieModel(
                 id: movieScheme.id,
                 title: movieScheme.title,
-                pathToImage: pathToImage + posterPath
+                pathToImage: pathToImage + posterPath,
+                isMovieFavorite: false,
+                likeIconPath: "heart",
+                dislikeIconPath: "heart.fill"
             )
         }
     }

@@ -19,6 +19,8 @@ final class MovieListCollectionViewDataSource {
     
     private var collectionView: UICollectionView
     
+    var presenter: IMovieListPresenter?
+    
     init(collectionView: UICollectionView) {
         self.collectionView = collectionView
     }
@@ -32,7 +34,10 @@ final class MovieListCollectionViewDataSource {
                     for: indexPath
                 ) as? MovieCollectionViewCell else { return nil }
                 
-                cell.fillCell(with: movie)
+                cell.fillCell(with: movie,
+                              onLikeButtonClicked: { self.likeMovie(at: indexPath.item)},
+                              onDislikeButtonClicked: { self.dislikeMovie(at: indexPath.item)}
+                )
                 return cell
             })
     }
@@ -42,6 +47,16 @@ final class MovieListCollectionViewDataSource {
         snapshot.appendSections([.main])
         snapshot.appendItems(movies)
         dataSource?.apply(snapshot, animatingDifferences: animatingDifferences)
+    }
+}
+
+private extension MovieListCollectionViewDataSource {
+    func likeMovie(at index: Int) {
+        self.presenter?.likeMovie(at: index)
+    }
+    
+    func dislikeMovie(at index: Int) {
+        self.presenter?.dislikeMovie(at: index)
     }
 }
 

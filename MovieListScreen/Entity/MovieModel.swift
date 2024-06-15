@@ -11,4 +11,7 @@ struct MovieModel: Hashable {
     let id: Int
     let title: String
     let pathToImage: String
+    var isMovieFavorite: Bool
+    let likeIconPath: String
+    let dislikeIconPath: String
 }
