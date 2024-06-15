@@ -67,16 +67,16 @@ extension MovieListPresenter: IMovieListPresenter {
             }
         }
     }
-        
-        func likeMovie(at index: Int) {
-            interactor.likeMovie(at: index)
-            interactor.updateMovies { [weak self] movies in
-                self?.movies = movies
-                DispatchQueue.main.async {
-                    self?.ui?.showMovies(movies)
-                }
+    
+    func likeMovie(at index: Int) {
+        interactor.likeMovie(at: index)
+        interactor.updateMovies { [weak self] movies in
+            self?.movies = movies
+            DispatchQueue.main.async {
+                self?.ui?.showMovies(movies)
             }
         }
     }
-    
+}
+
 

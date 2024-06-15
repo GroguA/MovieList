@@ -13,11 +13,11 @@ protocol IMovieListInteractor {
     func dislikeMovie(at index: Int)
     func likeMovie(at index: Int)
     func updateMovies(completion: (([MovieModel]) -> Void))
-
+    
 }
 
 final class MovieListInteractor {
-            
+    
     private var currentPage = 1
     
     private var moviesBeforeSearchStarted: [MovieModel] = [MovieModel]()

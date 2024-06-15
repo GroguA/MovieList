@@ -100,6 +100,7 @@
 		7C03368A2C1B3555009BF355 /* MovieListScreen */ = {
 			isa = PBXGroup;
 			children = (
+				7CABAA332C1DDACF00DB98F0 /* PersistentStoreLayer */,
 				7CABAA252C1CAE5000DB98F0 /* NetworkLayer */,
 				7CABAA242C1CADBC00DB98F0 /* Assemblies */,
 				7CABAA232C1CAD9800DB98F0 /* DataSource */,
@@ -187,6 +188,13 @@
 				7CABAA312C1DBB8600DB98F0 /* ArrayExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7CABAA332C1DDACF00DB98F0 /* PersistentStoreLayer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PersistentStoreLayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
