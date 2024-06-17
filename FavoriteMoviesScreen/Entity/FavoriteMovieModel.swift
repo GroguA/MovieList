@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct FavoriteMovieModel: Hashable {
+    let id: Int
+    let pathToImage: String
+    let title: String
+}
