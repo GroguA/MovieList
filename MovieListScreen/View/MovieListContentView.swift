@@ -28,7 +28,6 @@ class MovieListContentView: UIView {
         button.setImage(largeBoldHeart, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.imageView?.tintColor = .red
-        button.addTarget(self, action: #selector(showFavoriteMoviesButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -138,8 +137,5 @@ private extension MovieListContentView {
         
         return layout
     }
-    
-    @objc func showFavoriteMoviesButtonTapped() {
-        
-    }
+
 }

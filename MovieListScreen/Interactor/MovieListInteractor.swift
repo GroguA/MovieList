@@ -19,7 +19,7 @@ protocol IMovieListInteractor {
 
 final class MovieListInteractor {
     
-    var currentMovies = [MovieModel]()
+    private var currentMovies = [MovieModel]()
     
     private var currentPage = 1
     

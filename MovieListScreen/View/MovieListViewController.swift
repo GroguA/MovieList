@@ -57,10 +57,16 @@ private extension MovieListViewController {
         navigationItem.titleView = searchController.searchBar
         
         contentView.retryButton.addTarget(self, action: #selector(retryLoadingMovies), for: .touchUpInside)
+        contentView.showFavoriteMoviesButton.addTarget(self, action: #selector(showFavoriteMoviesButtonTapped), for: .touchUpInside)
+
     }
     
     @objc func retryLoadingMovies() {
         presenter.didLoad(ui: self)
+    }
+    
+    @objc func showFavoriteMoviesButtonTapped() {
+        MovieListRouter.showFavoriteMoviesScreen(navigationController: navigationController)
     }
     
 }
