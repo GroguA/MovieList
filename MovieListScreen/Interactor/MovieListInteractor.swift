@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol IMovieListInteractor {    
+protocol IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
     func loadMoreMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
     func dislikeMovie(at index: Int) throws
@@ -55,7 +55,7 @@ extension MovieListInteractor: IMovieListInteractor {
             switch result {
             case .success(let movies):
                 let newMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
-                let mergedMovies = self.moviesBeforeSearchStarted + newMovies
+                let mergedMovies = self.currentMovies + newMovies
                 self.currentMovies = mergedMovies
                 completion(.success(mergedMovies))
             case .failure(let error):
@@ -84,19 +84,19 @@ extension MovieListInteractor: IMovieListInteractor {
     func dislikeMovie(at index: Int) throws {
         let updatedMovie: MovieModel
         let movie = currentMovies[index]
-            updatedMovie = movie.copyWith(isMovieFavorite: false)
-            currentMovies[index] = updatedMovie
-            updateIsMovieFavorite(updatedMovie)
-
-        try serviceLocator.favoriteMoviesService.removeMovieFromFavorites(movieId: movie.id)
+        updatedMovie = movie.copyWith(isMovieFavorite: false)
+        currentMovies[index] = updatedMovie
+        updateIsMovieFavorite(updatedMovie)
+        
+        try serviceLocator.favoriteMoviesService.removeMovieFromFavorites(by: movie.id)
     }
-
+    
     func likeMovie(at index: Int) throws {
         let updatedMovie: MovieModel
-            let movie = currentMovies[index]
-            updatedMovie = movie.copyWith(isMovieFavorite: true)
-            currentMovies[index] = updatedMovie
-            updateIsMovieFavorite(updatedMovie)
+        let movie = currentMovies[index]
+        updatedMovie = movie.copyWith(isMovieFavorite: true)
+        currentMovies[index] = updatedMovie
+        updateIsMovieFavorite(updatedMovie)
         
         let coreDataModel = FavoriteMovieCoreDataModel(
             id: movie.id,
@@ -104,9 +104,9 @@ extension MovieListInteractor: IMovieListInteractor {
             pathToImage: movie.pathToImage
         )
         
-        try serviceLocator.favoriteMoviesService.addMovieToFavorites(movieToAdd: coreDataModel)
+        try serviceLocator.favoriteMoviesService.addMovieToFavorites(coreDataModel)
     }
-
+    
     func searchStopped() {
         isSearching = false
         currentMovies = moviesBeforeSearchStarted
@@ -115,11 +115,11 @@ extension MovieListInteractor: IMovieListInteractor {
     func updateMovies(completion: (([MovieModel]) -> Void)) {
         completion(currentMovies)
     }
-
+    
 }
 
 private extension MovieListInteractor {
-    private func mapMoviesSchemeToMovieModels(_ movies: [MovieScheme]) -> [MovieModel] {
+    func mapMoviesSchemeToMovieModels(_ movies: [MovieScheme]) -> [MovieModel] {
         let pathToImage = "https://image.tmdb.org/t/p/w500"
         var favoriteMovies = [FavoriteMovieCoreDataModel]()
         
@@ -146,7 +146,7 @@ private extension MovieListInteractor {
         return mappedMovies
     }
     
-    private func updateIsMovieFavorite(_ movie: MovieModel) {
+    func updateIsMovieFavorite(_ movie: MovieModel) {
         if let index = moviesBeforeSearchStarted.firstIndex(where: { $0.id == movie.id }) {
             moviesBeforeSearchStarted[index] = movie
         }

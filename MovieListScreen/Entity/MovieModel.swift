@@ -16,13 +16,13 @@ struct MovieModel: Hashable {
     let dislikeIconPath: String
     
     func copyWith(isMovieFavorite: Bool) -> MovieModel {
-            return MovieModel(
-                id: self.id,
-                title: self.title,
-                pathToImage: self.pathToImage,
-                isMovieFavorite: isMovieFavorite,
-                likeIconPath: self.likeIconPath,
-                dislikeIconPath: self.dislikeIconPath
-            )
-        }
+        return MovieModel(
+            id: self.id,
+            title: self.title,
+            pathToImage: self.pathToImage,
+            isMovieFavorite: isMovieFavorite,
+            likeIconPath: self.likeIconPath,
+            dislikeIconPath: self.dislikeIconPath
+        )
+    }
 }

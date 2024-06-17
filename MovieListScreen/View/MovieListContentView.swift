@@ -35,6 +35,7 @@ class MovieListContentView: UIView {
     lazy var searchController: UISearchController = {
         let searchController = UISearchController()
         searchController.searchBar.sizeToFit()
+        searchController.searchBar.placeholder = "Movie name"
         return searchController
     }()
     

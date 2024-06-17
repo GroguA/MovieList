@@ -20,7 +20,7 @@ class MovieListViewController: UIViewController {
     private lazy var contentView = MovieListContentView(delegate: self)
     
     private let presenter: IMovieListPresenter
-        
+    
     private lazy var searchController = contentView.searchController
     
     init(presenter: IMovieListPresenter) {
@@ -71,13 +71,13 @@ extension MovieListViewController: IMovieListController {
             self.contentView.moviesCollectionView.isHidden = false
             self.contentView.errorLabel.isHidden = true
             self.contentView.retryButton.isHidden = true
-            self.contentView.collectionViewDataSource?.applySnapshot(movies: movies)
+            self.contentView.collectionViewDataSource?.applySnapshot(with: movies)
         }
     }
     
     func updateMovies(_ movies: [MovieModel]) {
         DispatchQueue.main.async {
-            self.contentView.collectionViewDataSource?.reload(movies: movies)
+            self.contentView.collectionViewDataSource?.reloadSnapshot(with: movies)
         }
     }
     
@@ -141,6 +141,8 @@ extension MovieListViewController:  UISearchBarDelegate {
         }
         let optEncodedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
         guard let encodedText = optEncodedText else { return }
-        presenter.searchStarted(query: encodedText)
+        presenter.searchStartedBy(query: encodedText)
+        let indexPath = IndexPath(row: 0, section: 0)
+        contentView.moviesCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
     }
 }

@@ -42,14 +42,14 @@ final class MovieListCollectionViewDataSource {
             })
     }
     
-    func applySnapshot(movies: [MovieModel], animatingDifferences: Bool = true) {
+    func applySnapshot(with movies: [MovieModel], animatingDifferences: Bool = true) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(movies)
         dataSource?.apply(snapshot, animatingDifferences: animatingDifferences)
     }
     
-    func reload(movies: [MovieModel]) {
+    func reloadSnapshot(with movies: [MovieModel]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(movies)

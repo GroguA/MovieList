@@ -27,7 +27,7 @@ final class MovieNetworkService {
         }
         return URLRequest(url: url)
     }
-
+    
     private func makePopularMoviesRequest(page: Int) -> URLRequest? {
         let endpoint = "https://api.themoviedb.org/3/movie/popular"
         let apiKeyItem = URLQueryItem(name: "api_key", value: apiKey)
@@ -37,7 +37,7 @@ final class MovieNetworkService {
         let queryItems = [apiKeyItem, languageItem, pageItem]
         return makeURLRequest(endpoint: endpoint, queryItems: queryItems)
     }
-
+    
     private func makeMovieRequestByQuery(_ query: String) -> URLRequest? {
         let endpoint = "https://api.themoviedb.org/3/search/movie"
         let apiKeyItem = URLQueryItem(name: "api_key", value: apiKey)
@@ -47,7 +47,7 @@ final class MovieNetworkService {
         let queryItems = [apiKeyItem, languageItem, queryItem]
         return makeURLRequest(endpoint: endpoint, queryItems: queryItems)
     }
-
+    
 }
 
 extension MovieNetworkService: IMovieNetworkService {
@@ -57,12 +57,12 @@ extension MovieNetworkService: IMovieNetworkService {
                 completion(.failure(NetworkErrors.parseError(message: error.localizedDescription)))
                 return
             }
-
+            
             guard let data = data, let httpResponse = response as? HTTPURLResponse else {
                 completion(.failure(NetworkErrors.invalidResponse))
                 return
             }
-
+            
             switch httpResponse.statusCode {
             case 200..<300:
                 self.mapper.parse(MoviesResponseScheme.self, from: data) { result in
@@ -80,7 +80,7 @@ extension MovieNetworkService: IMovieNetworkService {
         let task = session.dataTask(with: request, completionHandler: completionHandler)
         task.resume()
     }
-
+    
     func getPopularMovies(page: Int, completion: @escaping (Result<[MovieScheme], Error>) -> Void) {
         guard let request = makePopularMoviesRequest(page: page) else {
             completion(.failure(NetworkErrors.invalidRequest))
@@ -88,7 +88,7 @@ extension MovieNetworkService: IMovieNetworkService {
         }
         fetchMovies(with: request, completion: completion)
     }
-
+    
     func searchMovieByQuery(_ query: String, completion: @escaping (Result<[MovieScheme], Error>) -> Void) {
         guard let request = makeMovieRequestByQuery(query) else {
             completion(.failure(NetworkErrors.invalidRequest))
@@ -96,5 +96,5 @@ extension MovieNetworkService: IMovieNetworkService {
         }
         fetchMovies(with: request, completion: completion)
     }
-
+    
 }

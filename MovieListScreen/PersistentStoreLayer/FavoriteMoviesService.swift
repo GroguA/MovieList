@@ -9,8 +9,8 @@ import Foundation
 import CoreData
 
 protocol IFavoriteMoviesService {
-    func addMovieToFavorites(movieToAdd: FavoriteMovieCoreDataModel) throws
-    func removeMovieFromFavorites(movieId: Int) throws
+    func addMovieToFavorites(_ movie: FavoriteMovieCoreDataModel) throws
+    func removeMovieFromFavorites(by id: Int) throws
     func fetchFavoriteMovies() throws -> [FavoriteMovieCoreDataModel]
 }
 
@@ -27,7 +27,7 @@ final class FavoriteMoviesService {
 }
 
 extension FavoriteMoviesService: IFavoriteMoviesService {
-    func addMovieToFavorites(movieToAdd: FavoriteMovieCoreDataModel) throws {
+    func addMovieToFavorites(_ movie: FavoriteMovieCoreDataModel) throws {
         
         let managedContext = persistentContainer.viewContext
         
@@ -37,9 +37,9 @@ extension FavoriteMoviesService: IFavoriteMoviesService {
         
         let movieNsManagedObject = NSManagedObject(entity: entity, insertInto: managedContext)
         
-        movieNsManagedObject.setValue(movieToAdd.title, forKey: "title")
-        movieNsManagedObject.setValue(movieToAdd.pathToImage, forKey: "pathToImage")
-        movieNsManagedObject.setValue(movieToAdd.id, forKey: "id")
+        movieNsManagedObject.setValue(movie.title, forKey: "title")
+        movieNsManagedObject.setValue(movie.pathToImage, forKey: "pathToImage")
+        movieNsManagedObject.setValue(movie.id, forKey: "id")
         
         do {
             try managedContext.save()
@@ -48,13 +48,13 @@ extension FavoriteMoviesService: IFavoriteMoviesService {
         }
     }
     
-    func removeMovieFromFavorites(movieId: Int) throws {
+    func removeMovieFromFavorites(by id: Int) throws {
         
         let managedContext = persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Movies")
         
-        let predicate = NSPredicate(format: "id == %@", NSNumber(value: movieId))
+        let predicate = NSPredicate(format: "id == %@", NSNumber(value: id))
         
         fetchRequest.predicate = predicate
         
