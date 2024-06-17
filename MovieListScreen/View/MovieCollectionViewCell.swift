@@ -71,9 +71,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
         self.dislikeAction = onDislikeButtonClicked
         self.likeAction = onLikeButtonClicked
         
-        likeImage.image = UIImage(systemName: movie.likeIconPath)
-        dislikeImage.image = UIImage(systemName: movie.dislikeIconPath)
-        
         if !movie.isMovieFavorite {
             likeImage.isHidden = false
             dislikeImage.isHidden = true
@@ -84,6 +81,8 @@ class MovieCollectionViewCell: UICollectionViewCell {
         
         moviePoster.image = nil
         movieTitle.text = movie.title
+        likeImage.image = UIImage(systemName: movie.likeIconPath)
+        dislikeImage.image = UIImage(systemName: movie.dislikeIconPath)
         
         serviceLocator.imageDownloader.fetchImage(pathToImage: movie.pathToImage, imageView: moviePoster)
     }

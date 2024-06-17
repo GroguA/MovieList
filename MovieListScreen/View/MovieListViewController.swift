@@ -9,6 +9,10 @@ import UIKit
 
 protocol IMovieListController: AnyObject {
     func showMovies(_ movies: [MovieModel])
+    func showError(_ error: String?)
+    func showLoadingProccess()
+    func hideLoadingProccess()
+    func updateMovies(_ movies: [MovieModel])
 }
 
 class MovieListViewController: UIViewController {
@@ -16,9 +20,7 @@ class MovieListViewController: UIViewController {
     private lazy var contentView = MovieListContentView(delegate: self)
     
     private let presenter: IMovieListPresenter
-    
-    private lazy var dataSource = contentView.collectionViewDataSource?.dataSource
-    
+        
     private lazy var searchController = contentView.searchController
     
     init(presenter: IMovieListPresenter) {
@@ -51,10 +53,14 @@ private extension MovieListViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: contentView.showFavoriteMoviesButton)
         
         searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
         searchController.hidesNavigationBarDuringPresentation = false
         navigationItem.titleView = searchController.searchBar
         
+        contentView.retryButton.addTarget(self, action: #selector(retryLoadingMovies), for: .touchUpInside)
+    }
+    
+    @objc func retryLoadingMovies() {
+        presenter.didLoad(ui: self)
     }
     
 }
@@ -62,7 +68,49 @@ private extension MovieListViewController {
 extension MovieListViewController: IMovieListController {
     func showMovies(_ movies: [MovieModel]) {
         DispatchQueue.main.async {
+            self.contentView.moviesCollectionView.isHidden = false
+            self.contentView.errorLabel.isHidden = true
+            self.contentView.retryButton.isHidden = true
             self.contentView.collectionViewDataSource?.applySnapshot(movies: movies)
+        }
+    }
+    
+    func updateMovies(_ movies: [MovieModel]) {
+        DispatchQueue.main.async {
+            self.contentView.collectionViewDataSource?.reload(movies: movies)
+        }
+    }
+    
+    func showError(_ error: String?) {
+        DispatchQueue.main.async {
+            self.contentView.moviesCollectionView.isHidden = true
+            self.contentView.errorLabel.isHidden = false
+            self.contentView.retryButton.isHidden = false
+            self.contentView.activityIndicatorView.isHidden = true
+            self.contentView.activityIndicatorView.stopAnimating()
+            if let error {
+                self.contentView.errorLabel.text = error
+            }
+        }
+    }
+    
+    func showLoadingProccess() {
+        DispatchQueue.main.async {
+            self.contentView.activityIndicatorView.isHidden = false
+            self.contentView.activityIndicatorView.startAnimating()
+            self.contentView.moviesCollectionView.isHidden = true
+            self.contentView.errorLabel.isHidden = true
+            self.contentView.retryButton.isHidden = true
+        }
+    }
+    
+    func hideLoadingProccess() {
+        DispatchQueue.main.async {
+            self.contentView.activityIndicatorView.isHidden = true
+            self.contentView.activityIndicatorView.stopAnimating()
+            self.contentView.moviesCollectionView.isHidden = false
+            self.contentView.errorLabel.isHidden = true
+            self.contentView.retryButton.isHidden = true
         }
     }
     
@@ -74,24 +122,25 @@ extension MovieListViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let movies = dataSource?.snapshot().itemIdentifiers else { return }
+        guard let movies = contentView.collectionViewDataSource?.dataSource?.snapshot().itemIdentifiers else { return }
         if (indexPath.item == movies.count - 1) {
             presenter.moviesScrolled()
         }
     }
 }
 
-extension MovieListViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else { return }
-        let optEncodedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
-        guard let encodedText = optEncodedText else { return }
-        presenter.searchStarted(query: encodedText)
-    }
-}
-
 extension MovieListViewController:  UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         presenter.searchStopped()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchController.searchBar.text?.trimmingCharacters(in: .whitespaces)
+        else {
+            return
+        }
+        let optEncodedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+        guard let encodedText = optEncodedText else { return }
+        presenter.searchStarted(query: encodedText)
     }
 }

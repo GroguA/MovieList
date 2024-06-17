@@ -38,6 +38,34 @@ class MovieListContentView: UIView {
         return searchController
     }()
     
+    lazy var errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = "Error loading movies"
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    lazy var retryButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Retry", for: .normal)
+        button.backgroundColor = .systemBlue
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        button.setTitleColor(.white, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(style: .large)
+        activityView.translatesAutoresizingMaskIntoConstraints = false
+        return activityView
+    }()
+    
     var collectionViewDataSource: MovieListCollectionViewDataSource?
     
     init(delegate: UICollectionViewDelegate) {
@@ -58,12 +86,31 @@ private extension MovieListContentView {
     func setupView() {
         backgroundColor = .white
         addSubview(moviesCollectionView)
+        addSubview(errorLabel)
+        addSubview(retryButton)
+        addSubview(activityIndicatorView)
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
+        activityIndicatorView.isHidden = true
         
         let constraints = [
             moviesCollectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             moviesCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             moviesCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             moviesCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            
+            errorLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            errorLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            errorLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            retryButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 64),
+            retryButton.centerXAnchor.constraint(equalTo: errorLabel.centerXAnchor),
+            retryButton.widthAnchor.constraint(equalToConstant: 100),
+            retryButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            
         ]
         
         NSLayoutConstraint.activate(constraints)
