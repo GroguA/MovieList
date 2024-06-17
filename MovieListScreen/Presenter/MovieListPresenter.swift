@@ -11,8 +11,8 @@ protocol IMovieListPresenter {
     func didLoad(ui: IMovieListController)
     func movieDidChoose(at index: Int)
     func moviesScrolled()
-    func dislikeMovie(at index: Int)
-    func likeMovie(at index: Int)
+    func movieDisliked(at index: Int)
+    func movieLiked(at index: Int)
     func searchStarted(query: String)
     func searchStopped()
 }
@@ -32,15 +32,16 @@ final class MovieListPresenter {
 extension MovieListPresenter: IMovieListPresenter {
     func didLoad(ui: IMovieListController) {
         self.ui = ui
+        self.ui?.showLoadingProccess()
         interactor.fetchMovies { result in
+            self.ui?.hideLoadingProccess()
             switch result {
             case .success(let movies):
                 self.movies = movies
                 self.ui?.showMovies(movies)
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.ui?.showError(error.localizedDescription)
             }
-            
         }
     }
     
@@ -49,34 +50,44 @@ extension MovieListPresenter: IMovieListPresenter {
     }
     
     func moviesScrolled() {
+        self.ui?.showLoadingProccess()
         interactor.loadMoreMovies { result in
+            self.ui?.hideLoadingProccess()
             switch result {
             case .success(let movies):
-                self.movies += movies
+                self.movies = movies
                 self.ui?.showMovies(movies)
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.ui?.showError(error.localizedDescription)
             }
         }
     }
     
-    func dislikeMovie(at index: Int) {
-        interactor.dislikeMovie(at: index)
-        interactor.updateMovies { [weak self] movies in
-            self?.movies = movies
-            DispatchQueue.main.async {
-                self?.ui?.showMovies(movies)
+    func movieDisliked(at index: Int) {
+        do {
+            try interactor.dislikeMovie(at: index)
+            interactor.updateMovies { movies in
+                self.movies = movies
+                self.ui?.showMovies(movies)
             }
+        } catch CoreDataErrors.runtimeError(let message) {
+            self.ui?.showError(message)
+        } catch {
+            self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
     }
     
-    func likeMovie(at index: Int) {
-        interactor.likeMovie(at: index)
-        interactor.updateMovies { [weak self] movies in
-            self?.movies = movies
-            DispatchQueue.main.async {
-                self?.ui?.showMovies(movies)
+    func movieLiked(at index: Int) {
+        do {
+            try interactor.likeMovie(at: index)
+            interactor.updateMovies { movies in
+                self.movies = movies
+                self.ui?.showMovies(movies)
             }
+        } catch CoreDataErrors.runtimeError(let message) {
+            self.ui?.showError(message)
+        } catch {
+            self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
     }
     
@@ -84,9 +95,13 @@ extension MovieListPresenter: IMovieListPresenter {
         interactor.fetchMoviesByQuery(query) { result in
             switch result {
             case .success(let movies):
-                self.ui?.showMovies(movies)
-            case .failure(_):
-                break
+                if movies.isEmpty {
+                    self.ui?.showError("Such movie not found")
+                }
+                self.movies = movies
+                self.ui?.updateMovies(movies)
+            case .failure(let error):
+                self.ui?.showError(error.localizedDescription)
             }
         }
     }
@@ -94,7 +109,8 @@ extension MovieListPresenter: IMovieListPresenter {
     func searchStopped() {
         interactor.searchStopped()
         interactor.updateMovies { movies in
-            self.ui?.showMovies(movies)
+            self.movies = movies
+            self.ui?.updateMovies(movies)
         }
     }
     

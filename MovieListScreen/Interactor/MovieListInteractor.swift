@@ -7,25 +7,25 @@
 
 import Foundation
 
-protocol IMovieListInteractor {
+protocol IMovieListInteractor {    
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
     func loadMoreMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
-    func dislikeMovie(at index: Int)
-    func likeMovie(at index: Int)
-    func updateMovies(completion: (([MovieModel]) -> Void))
+    func dislikeMovie(at index: Int) throws
+    func likeMovie(at index: Int) throws
     func fetchMoviesByQuery(_ query: String, completion: @escaping (Result<[MovieModel], Error>) -> Void)
     func searchStopped()
+    func updateMovies(completion: (([MovieModel]) -> Void))
 }
 
 final class MovieListInteractor {
+    
+    var currentMovies = [MovieModel]()
     
     private var currentPage = 1
     
     private var moviesBeforeSearchStarted = [MovieModel]()
     
     private var isSearching = false
-    
-    private var searchedMovies = [MovieModel]()
     
     private let serviceLocator = ServiceLocator.shared
     
@@ -38,7 +38,8 @@ extension MovieListInteractor: IMovieListInteractor {
             case .success(let movies):
                 let mappedMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
                 self.moviesBeforeSearchStarted = mappedMovies
-                completion(.success(self.moviesBeforeSearchStarted))
+                self.currentMovies = mappedMovies
+                completion(.success(mappedMovies))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -54,8 +55,9 @@ extension MovieListInteractor: IMovieListInteractor {
             switch result {
             case .success(let movies):
                 let newMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
-                self.moviesBeforeSearchStarted += newMovies
-                completion(.success(self.moviesBeforeSearchStarted))
+                let mergedMovies = self.moviesBeforeSearchStarted + newMovies
+                self.currentMovies = mergedMovies
+                completion(.success(mergedMovies))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -70,42 +72,31 @@ extension MovieListInteractor: IMovieListInteractor {
         serviceLocator.networkService.searchMovieByQuery(query) { result in
             switch result {
             case .success(let movies):
-                let mappedMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
+                let mappedMovies = self.mapMoviesSchemeToMovieModels(movies)
+                self.currentMovies = mappedMovies
                 completion(.success(mappedMovies))
-                self.searchedMovies = mappedMovies
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    func dislikeMovie(at index: Int) {
-        let movie: MovieModel
-        
-        if isSearching {
-            searchedMovies[index].isMovieFavorite = false
-            movie = searchedMovies[index]
-        } else {
-            movie = moviesBeforeSearchStarted[index]
-            moviesBeforeSearchStarted[index].isMovieFavorite = false
-        }
-        do {
-            try serviceLocator.favoriteMoviesService.removeMovieFromFavorites(movieId: movie.id)
-        } catch {
-            
-        }
+    func dislikeMovie(at index: Int) throws {
+        let updatedMovie: MovieModel
+        let movie = currentMovies[index]
+            updatedMovie = movie.copyWith(isMovieFavorite: false)
+            currentMovies[index] = updatedMovie
+            updateIsMovieFavorite(updatedMovie)
+
+        try serviceLocator.favoriteMoviesService.removeMovieFromFavorites(movieId: movie.id)
     }
-    
-    func likeMovie(at index: Int) {
-        let movie: MovieModel
-        
-        if isSearching {
-            searchedMovies[index].isMovieFavorite = true
-            movie = searchedMovies[index]
-        } else {
-            moviesBeforeSearchStarted[index].isMovieFavorite = true
-            movie = moviesBeforeSearchStarted[index]
-        }
+
+    func likeMovie(at index: Int) throws {
+        let updatedMovie: MovieModel
+            let movie = currentMovies[index]
+            updatedMovie = movie.copyWith(isMovieFavorite: true)
+            currentMovies[index] = updatedMovie
+            updateIsMovieFavorite(updatedMovie)
         
         let coreDataModel = FavoriteMovieCoreDataModel(
             id: movie.id,
@@ -113,41 +104,51 @@ extension MovieListInteractor: IMovieListInteractor {
             pathToImage: movie.pathToImage
         )
         
-        do {
-            try serviceLocator.favoriteMoviesService.addMovieToFavorites(movieToAdd: coreDataModel)
-        } catch {
-            
-        }
+        try serviceLocator.favoriteMoviesService.addMovieToFavorites(movieToAdd: coreDataModel)
+    }
+
+    func searchStopped() {
+        isSearching = false
+        currentMovies = moviesBeforeSearchStarted
     }
     
     func updateMovies(completion: (([MovieModel]) -> Void)) {
-        if isSearching {
-            completion(searchedMovies)
-        } else {
-            completion(moviesBeforeSearchStarted)
-        }
+        completion(currentMovies)
     }
-    
-    func searchStopped() {
-        isSearching = false
-    }
+
 }
 
 private extension MovieListInteractor {
-    func mapMoviesSchemeToMovieModels(_ movies: [MovieScheme]) -> [MovieModel] {
+    private func mapMoviesSchemeToMovieModels(_ movies: [MovieScheme]) -> [MovieModel] {
         let pathToImage = "https://image.tmdb.org/t/p/w500"
-        return movies.compactMap { movieScheme in
-            guard let posterPath = movieScheme.posterPath else {
-                return nil
-            }
-            return MovieModel(
+        var favoriteMovies = [FavoriteMovieCoreDataModel]()
+        
+        do {
+            favoriteMovies = try serviceLocator.favoriteMoviesService.fetchFavoriteMovies()
+        } catch {
+            favoriteMovies = []
+        }
+        
+        var mappedMovies = [MovieModel]()
+        movies.forEach { movieScheme in
+            let isMovieFavorite = favoriteMovies.contains(where: { movieScheme.id == $0.id } )
+            guard let posterPath = movieScheme.posterPath else { return }
+            let mappedMovie = MovieModel(
                 id: movieScheme.id,
                 title: movieScheme.title,
                 pathToImage: pathToImage + posterPath,
-                isMovieFavorite: false,
+                isMovieFavorite: isMovieFavorite,
                 likeIconPath: "heart",
                 dislikeIconPath: "heart.fill"
             )
+            mappedMovies.append(mappedMovie)
+        }
+        return mappedMovies
+    }
+    
+    private func updateIsMovieFavorite(_ movie: MovieModel) {
+        if let index = moviesBeforeSearchStarted.firstIndex(where: { $0.id == movie.id }) {
+            moviesBeforeSearchStarted[index] = movie
         }
     }
     
