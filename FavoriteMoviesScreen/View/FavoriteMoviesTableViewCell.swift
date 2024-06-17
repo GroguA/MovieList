@@ -7,15 +7,15 @@
 
 import UIKit
 
-class FavoriteMoviesCollectionViewCell: UITableViewCell {
-    static let identifier = String(describing: FavoriteMoviesCollectionViewCell.self)
+class FavoriteMoviesTableViewCell: UITableViewCell {
+    static let identifier = String(describing: FavoriteMoviesTableViewCell.self)
     
     private lazy var moviePoster: UIImageView = {
         let poster = UIImageView(frame: .zero)
         poster.layer.cornerRadius = 8
         poster.layer.masksToBounds = true
         poster.translatesAutoresizingMaskIntoConstraints = false
-        poster.contentMode = .scaleToFill
+        poster.contentMode = .scaleAspectFit
         return poster
     }()
     
@@ -49,7 +49,7 @@ class FavoriteMoviesCollectionViewCell: UITableViewCell {
 
 }
 
-private extension FavoriteMoviesCollectionViewCell {
+private extension FavoriteMoviesTableViewCell {
     func setupViews() {
         contentView.addSubview(moviePoster)
         contentView.addSubview(movieTitle)
@@ -57,14 +57,20 @@ private extension FavoriteMoviesCollectionViewCell {
         setConstraints()
     }
     
+    
     func setConstraints() {
+        
         let constraints = [
-            moviePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            moviePoster.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            moviePoster.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+            moviePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            moviePoster.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
+            moviePoster.widthAnchor.constraint(equalTo: moviePoster.heightAnchor, multiplier: 0.75),
             
+            movieTitle.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 8),
             movieTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            movieTitle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            movieTitle.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -8),
             
         ]
+        NSLayoutConstraint.activate(constraints)
     }
 }

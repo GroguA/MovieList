@@ -17,6 +17,8 @@ class FavoriteMoviesContentView: UIView {
         return tableView
     }()
     
+    var tableViewDataSource: FavoriteMoviesTableViewDataSource?
+    
     init(delegate: UITableViewDelegate) {
         super.init(frame: .zero)
         favoriteMoviesTableView.delegate = delegate
@@ -34,10 +36,24 @@ class FavoriteMoviesContentView: UIView {
 
 private extension FavoriteMoviesContentView {
     func setupView() {
+        addSubview(favoriteMoviesTableView)
+        setupConstraints()
+    }
+    
+    func setupConstraints() {
+        let constraints = [
+            favoriteMoviesTableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            favoriteMoviesTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            favoriteMoviesTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            favoriteMoviesTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ]
         
+        NSLayoutConstraint.activate(constraints)
     }
     
     func setupDataSource() {
-        
+        tableViewDataSource = FavoriteMoviesTableViewDataSource(tableView: favoriteMoviesTableView)
+        tableViewDataSource?.makeDataSource()
     }
+    
 }
