@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavoriteMoviesTableViewCell: UITableViewCell {
+final class FavoriteMoviesTableViewCell: UITableViewCell {
     static let identifier = String(describing: FavoriteMoviesTableViewCell.self)
     
     private lazy var moviePoster: UIImageView = {
@@ -29,7 +29,7 @@ class FavoriteMoviesTableViewCell: UITableViewCell {
     }()
     
     private let serviceLocator = ServiceLocator.shared
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -46,7 +46,7 @@ class FavoriteMoviesTableViewCell: UITableViewCell {
         movieTitle.text = movie.title
         serviceLocator.imageDownloader.fetchImage(pathToImage: movie.pathToImage, imageView: moviePoster)
     }
-
+    
 }
 
 private extension FavoriteMoviesTableViewCell {
@@ -59,7 +59,6 @@ private extension FavoriteMoviesTableViewCell {
     
     
     func setConstraints() {
-        
         let constraints = [
             moviePoster.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             moviePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),

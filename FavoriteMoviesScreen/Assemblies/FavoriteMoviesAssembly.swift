@@ -8,7 +8,7 @@
 import UIKit
 
 enum FavoriteMoviesAssembly {
-    static func createFavoriteMoviesModule() -> UIViewController {
+    static func createFavoriteMoviesModule() -> FavoriteMoviesViewController {
         let interactor = FavoriteMoviesInteractor()
         let presenter = FavoriteMoviesPresenter(interactor: interactor)
         let view = FavoriteMoviesViewController(presenter: presenter)

@@ -7,10 +7,10 @@
 
 import UIKit
 
-class FavoriteMoviesContentView: UIView {
-
+final class FavoriteMoviesContentView: UIView {
+    
     lazy var favoriteMoviesTableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(FavoriteMoviesTableViewCell.self, forCellReuseIdentifier: FavoriteMoviesTableViewCell.identifier)
         tableView.backgroundColor = .white
         tableView.translatesAutoresizingMaskIntoConstraints = false
