@@ -8,10 +8,6 @@
 import UIKit
 
 enum MovieListAssembly {
-    struct Dependencies {
-        let navigationController: UINavigationController
-    }
-    
     static func createMovieListModule(with navigationController: UINavigationController) -> UIViewController {
         let interactor = MovieListInteractor()
         let router = MovieListRouter(navigationController: navigationController)
