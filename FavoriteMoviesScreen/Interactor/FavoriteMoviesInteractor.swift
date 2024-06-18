@@ -9,12 +9,13 @@ import Foundation
 
 protocol IFavoriteMoviesInteractor {
     func loadFavoriteMovies(completion: @escaping ([FavoriteMovieModel]) -> Void)
+    func deleteMovie(by id: Int) throws
     
 }
 
 final class FavoriteMoviesInteractor {
     private let serviceLocator = ServiceLocator.shared
-        
+    
 }
 
 extension FavoriteMoviesInteractor: IFavoriteMoviesInteractor {
@@ -36,4 +37,9 @@ extension FavoriteMoviesInteractor: IFavoriteMoviesInteractor {
             })
             completion(favoriteMappedMovieModels)
         }
+    
+    func deleteMovie(by id: Int) throws {
+        try serviceLocator.favoriteMoviesService.removeMovieFromFavorites(by: id)
+    }
+    
 }

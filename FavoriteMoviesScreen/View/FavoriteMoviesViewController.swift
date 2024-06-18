@@ -9,15 +9,15 @@ import UIKit
 
 protocol IFavoriteMoviesViewController: AnyObject {
     func showMovies(_ movies: [FavoriteMovieModel])
-    func deleteItem(at index: Int )
 }
 
-class FavoriteMoviesViewController: UIViewController {
-
+final class FavoriteMoviesViewController: UIViewController {
+    var onMovieDeleted: ((FavoriteMovieModel) -> Void)?
+    
     private lazy var contentView = FavoriteMoviesContentView(delegate: self)
     
-    private let presenter: IFavoriteMoviesPresenter
-    
+    private var presenter: IFavoriteMoviesPresenter
+        
     init(presenter: IFavoriteMoviesPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -36,9 +36,16 @@ class FavoriteMoviesViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         presenter.didLoad(ui: self)
+        presenter.onMovieDeleted = { [weak self] deletedMovie in
+            self?.onMovieDeleted?(deletedMovie)
+        }
     }
     
-
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter.onMovieDeleted = nil
+    }
+    
 }
 
 extension FavoriteMoviesViewController: IFavoriteMoviesViewController {
@@ -46,10 +53,6 @@ extension FavoriteMoviesViewController: IFavoriteMoviesViewController {
         self.contentView.tableViewDataSource?.applySnapshot(with: movies)
     }
     
-    func deleteItem(at index: Int) {
-        
-    }
-
 }
 
 extension FavoriteMoviesViewController: UITableViewDelegate {
@@ -59,8 +62,7 @@ extension FavoriteMoviesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completionHandler) in
-            
-            
+            self.presenter.movieDeleted(at: indexPath.row)
             completionHandler(true)
         }
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
