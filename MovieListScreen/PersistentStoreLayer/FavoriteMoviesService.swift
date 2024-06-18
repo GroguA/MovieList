@@ -49,17 +49,13 @@ extension FavoriteMoviesService: IFavoriteMoviesService {
     }
     
     func removeMovieFromFavorites(by id: Int) throws {
-        
+        var moviesToDelete = [NSManagedObject]()
         let managedContext = persistentContainer.viewContext
-        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Movies")
-        
         let predicate = NSPredicate(format: "id == %@", NSNumber(value: id))
         
         fetchRequest.predicate = predicate
-        
-        var moviesToDelete = [NSManagedObject]()
-        
+            
         do {
             let movieNsManagedObjects = try managedContext.fetch(fetchRequest)
             moviesToDelete = movieNsManagedObjects
@@ -79,11 +75,8 @@ extension FavoriteMoviesService: IFavoriteMoviesService {
     }
     
     func fetchFavoriteMovies() throws -> [FavoriteMovieCoreDataModel] {
-        
         var moviesArr = [FavoriteMovieCoreDataModel]()
-        
         let managedContext = persistentContainer.viewContext
-        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Movies")
         
         do {

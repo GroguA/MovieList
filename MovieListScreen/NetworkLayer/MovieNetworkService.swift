@@ -13,7 +13,6 @@ protocol IMovieNetworkService {
 }
 
 final class MovieNetworkService {
-    
     private let apiKey = "575b12481e57259feb84daf392f42b85"
     private let session = URLSession.shared
     private let mapper = JsonDecoderWrapper()

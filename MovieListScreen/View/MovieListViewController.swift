@@ -17,10 +17,10 @@ protocol IMovieListController: AnyObject {
 class MovieListViewController: UIViewController {
     
     private lazy var contentView = MovieListContentView(delegate: self)
+        
+    private lazy var searchController = contentView.searchController
     
     private let presenter: IMovieListPresenter
-    
-    private lazy var searchController = contentView.searchController
     
     init(presenter: IMovieListPresenter) {
         self.presenter = presenter

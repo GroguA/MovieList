@@ -115,7 +115,7 @@ extension MovieListInteractor: IMovieListInteractor {
     
     func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
         if let index = currentMovies.firstIndex(where: { $0.id == deletedMovie.id }), let movie = currentMovies.first(where: { $0.id == deletedMovie.id }) {
-            let newMovie = MovieModel(id: deletedMovie.id, title: deletedMovie.title, pathToImage: deletedMovie.pathToImage, isMovieFavorite: false, likeIconPath: movie.likeIconPath, dislikeIconPath: movie.dislikeIconPath)
+            let newMovie = movie.copyWith(isMovieFavorite: false)
             currentMovies[index] = newMovie
         }
     }

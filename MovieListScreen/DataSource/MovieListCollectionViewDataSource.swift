@@ -17,10 +17,10 @@ final class MovieListCollectionViewDataSource {
     
     var dataSource: DataSource?
     
-    private var collectionView: UICollectionView
-    
     var presenter: IMovieListPresenter?
     
+    private var collectionView: UICollectionView
+        
     init(collectionView: UICollectionView) {
         self.collectionView = collectionView
     }
