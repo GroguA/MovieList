@@ -48,13 +48,6 @@ final class MovieListCollectionViewDataSource {
         snapshot.appendItems(movies)
         dataSource?.apply(snapshot, animatingDifferences: animatingDifferences)
     }
-    
-    func reloadSnapshot(with movies: [MovieModel]) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(movies)
-        dataSource?.applySnapshotUsingReloadData(snapshot)
-    }
 }
 
 private extension MovieListCollectionViewDataSource {
