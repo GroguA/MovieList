@@ -7,11 +7,11 @@
 
 import UIKit
 
-enum Section {
-    case main
-}
-
 final class MovieListCollectionViewDataSource {
+    enum Section {
+        case main
+    }
+    
     typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieModel>
     

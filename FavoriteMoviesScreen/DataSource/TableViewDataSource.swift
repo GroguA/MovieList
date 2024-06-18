@@ -7,11 +7,11 @@
 
 import UIKit
 
-enum TableSection {
-    case main
-}
-
 final class FavoriteMoviesTableViewDataSource {
+    enum TableSection {
+        case main
+    }
+    
     typealias DataSource = UITableViewDiffableDataSource<TableSection, FavoriteMovieModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<TableSection, FavoriteMovieModel>
     
