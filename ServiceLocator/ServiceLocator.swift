@@ -8,13 +8,10 @@
 import Foundation
 
 class ServiceLocator {
-    
     static let shared = ServiceLocator()
     
     lazy var networkService: IMovieNetworkService = MovieNetworkService()
-    
     lazy var favoriteMoviesService: IFavoriteMoviesService = FavoriteMoviesService()
-    
     lazy var imageDownloader = ImageDownloader()
         
     private init() { }

@@ -15,6 +15,8 @@ protocol IMovieListPresenter {
     func movieLiked(at index: Int)
     func searchStartedBy(query: String)
     func searchStopped()
+    func showFavoriteMoviesClicked()
+    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel)
 }
 
 final class MovieListPresenter {
@@ -22,10 +24,13 @@ final class MovieListPresenter {
     
     private var movies = [MovieModel]()
     
-    private var interactor: IMovieListInteractor
+    private let interactor: IMovieListInteractor
     
-    init(interactor: IMovieListInteractor) {
+    private let router: IMovieListRouter
+    
+    init(interactor: IMovieListInteractor, router: IMovieListRouter) {
         self.interactor = interactor
+        self.router = router
     }
 }
 
@@ -49,6 +54,14 @@ extension MovieListPresenter: IMovieListPresenter {
         
     }
     
+    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
+        interactor.movieDeletedFromFavorite(deletedMovie)
+        interactor.updateMovies { movies in
+            self.movies = movies
+            self.ui?.showMovies(movies)
+        }
+    }
+    
     func moviesScrolled() {
         interactor.loadMoreMovies { result in
             switch result {
@@ -69,7 +82,7 @@ extension MovieListPresenter: IMovieListPresenter {
                 self.ui?.showMovies(movies)
             }
         } catch CoreDataErrors.runtimeError(let message) {
-            self.ui?.showError(message)
+            self.ui?.showStorageError(message)
         } catch {
             self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
@@ -83,7 +96,7 @@ extension MovieListPresenter: IMovieListPresenter {
                 self.ui?.showMovies(movies)
             }
         } catch CoreDataErrors.runtimeError(let message) {
-            self.ui?.showError(message)
+            self.ui?.showStorageError(message)
         } catch {
             self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
@@ -97,7 +110,7 @@ extension MovieListPresenter: IMovieListPresenter {
                     self.ui?.showError("Such movie not found")
                 }
                 self.movies = movies
-                self.ui?.updateMovies(movies)
+                self.ui?.showMovies(movies)
             case .failure(let error):
                 self.ui?.showError(error.localizedDescription)
             }
@@ -108,7 +121,13 @@ extension MovieListPresenter: IMovieListPresenter {
         interactor.searchStopped()
         interactor.updateMovies { movies in
             self.movies = movies
-            self.ui?.updateMovies(movies)
+            self.ui?.showMovies(movies)
+        }
+    }
+    
+    func showFavoriteMoviesClicked() {
+        router.showFavoriteMoviesScreen() { deletedMovie in
+            self.movieDeletedFromFavorite(deletedMovie)
         }
     }
     

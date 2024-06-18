@@ -7,20 +7,20 @@
 
 import UIKit
 
-enum Section {
-    case main
-}
-
 final class MovieListCollectionViewDataSource {
+    enum Section {
+        case main
+    }
+    
     typealias DataSource = UICollectionViewDiffableDataSource<Section, MovieModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieModel>
     
     var dataSource: DataSource?
     
-    private var collectionView: UICollectionView
-    
     var presenter: IMovieListPresenter?
     
+    private var collectionView: UICollectionView
+        
     init(collectionView: UICollectionView) {
         self.collectionView = collectionView
     }
@@ -47,13 +47,6 @@ final class MovieListCollectionViewDataSource {
         snapshot.appendSections([.main])
         snapshot.appendItems(movies)
         dataSource?.apply(snapshot, animatingDifferences: animatingDifferences)
-    }
-    
-    func reloadSnapshot(with movies: [MovieModel]) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(movies)
-        dataSource?.applySnapshotUsingReloadData(snapshot)
     }
 }
 

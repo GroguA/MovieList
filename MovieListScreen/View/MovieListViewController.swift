@@ -12,16 +12,16 @@ protocol IMovieListController: AnyObject {
     func showError(_ error: String?)
     func showLoadingProccess()
     func hideLoadingProccess()
-    func updateMovies(_ movies: [MovieModel])
+    func showStorageError(_ error: String)
 }
 
 class MovieListViewController: UIViewController {
     
     private lazy var contentView = MovieListContentView(delegate: self)
+        
+    private lazy var searchController = contentView.searchController
     
     private let presenter: IMovieListPresenter
-    
-    private lazy var searchController = contentView.searchController
     
     init(presenter: IMovieListPresenter) {
         self.presenter = presenter
@@ -57,10 +57,16 @@ private extension MovieListViewController {
         navigationItem.titleView = searchController.searchBar
         
         contentView.retryButton.addTarget(self, action: #selector(retryLoadingMovies), for: .touchUpInside)
+        contentView.showFavoriteMoviesButton.addTarget(self, action: #selector(showFavoriteMoviesButtonTapped), for: .touchUpInside)
+
     }
     
     @objc func retryLoadingMovies() {
         presenter.didLoad(ui: self)
+    }
+    
+    @objc func showFavoriteMoviesButtonTapped() {
+        presenter.showFavoriteMoviesClicked()
     }
     
 }
@@ -72,12 +78,6 @@ extension MovieListViewController: IMovieListController {
             self.contentView.errorLabel.isHidden = true
             self.contentView.retryButton.isHidden = true
             self.contentView.collectionViewDataSource?.applySnapshot(with: movies)
-        }
-    }
-    
-    func updateMovies(_ movies: [MovieModel]) {
-        DispatchQueue.main.async {
-            self.contentView.collectionViewDataSource?.reloadSnapshot(with: movies)
         }
     }
     
@@ -112,6 +112,11 @@ extension MovieListViewController: IMovieListController {
             self.contentView.errorLabel.isHidden = true
             self.contentView.retryButton.isHidden = true
         }
+    }
+    
+    func showStorageError(_ error: String) {
+        contentView.errorAlert.message = error
+        self.present(contentView.errorAlert, animated: true)
     }
     
 }

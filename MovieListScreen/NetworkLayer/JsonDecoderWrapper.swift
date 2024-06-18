@@ -8,7 +8,6 @@
 import Foundation
 
 final class JsonDecoderWrapper {
-    
     private lazy var decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601

@@ -28,7 +28,6 @@ class MovieListContentView: UIView {
         button.setImage(largeBoldHeart, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.imageView?.tintColor = .red
-        button.addTarget(self, action: #selector(showFavoriteMoviesButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -65,6 +64,12 @@ class MovieListContentView: UIView {
         let activityView = UIActivityIndicatorView(style: .large)
         activityView.translatesAutoresizingMaskIntoConstraints = false
         return activityView
+    }()
+    
+    lazy var errorAlert: UIAlertController = {
+        let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default))
+        return alert
     }()
     
     var collectionViewDataSource: MovieListCollectionViewDataSource?
@@ -138,8 +143,5 @@ private extension MovieListContentView {
         
         return layout
     }
-    
-    @objc func showFavoriteMoviesButtonTapped() {
-        
-    }
+
 }

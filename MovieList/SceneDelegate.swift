@@ -8,17 +8,22 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
-
+    
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        let viewController = MovieListAssembly.createMovieListModule()
+        let navigationController = UINavigationController()
+        let movieListViewController = MovieListAssembly.createMovieListModule(with: navigationController)
+        
+        navigationController.viewControllers = [movieListViewController]
+        
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = UINavigationController(rootViewController: viewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
-
 }
+
+
 

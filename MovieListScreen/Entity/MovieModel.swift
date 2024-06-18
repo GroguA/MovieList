@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct MovieModel: Hashable {
+struct MovieModel: Hashable, Identifiable {
+    let itemId = UUID()
     let id: Int
     let title: String
     let pathToImage: String

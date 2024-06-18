@@ -8,7 +8,6 @@
 import UIKit
 
 final class ImageDownloader {
-    
     private let session = URLSession.shared
     
     func fetchImage(pathToImage: String, imageView: UIImageView) {
