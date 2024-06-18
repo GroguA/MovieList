@@ -114,9 +114,9 @@ extension MovieListInteractor: IMovieListInteractor {
     }
     
     func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
-        if let index = currentMovies.firstIndex(where: { $0.id == deletedMovie.id }), let movie = currentMovies.first(where: { $0.id == deletedMovie.id }) {
-            let newMovie = movie.copyWith(isMovieFavorite: false)
-            currentMovies[index] = newMovie
+        updateFavoriteStatus(for: deletedMovie, in: &currentMovies)
+        if isSearching {
+            updateFavoriteStatus(for: deletedMovie, in: &moviesBeforeSearchStarted)
         }
     }
     
@@ -160,4 +160,11 @@ private extension MovieListInteractor {
         }
     }
     
+    private func updateFavoriteStatus(for deletedMovie: FavoriteMovieModel, in movieArray: inout [MovieModel]) {
+        if let index = movieArray.firstIndex(where: { $0.id == deletedMovie.id }) {
+            let movie = movieArray[index]
+            let newMovie = movie.copyWith(isMovieFavorite: false)
+            movieArray[index] = newMovie
+        }
+    }
 }
