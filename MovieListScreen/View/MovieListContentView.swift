@@ -66,6 +66,12 @@ class MovieListContentView: UIView {
         return activityView
     }()
     
+    lazy var errorAlert: UIAlertController = {
+        let alert = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default))
+        return alert
+    }()
+    
     var collectionViewDataSource: MovieListCollectionViewDataSource?
     
     init(delegate: UICollectionViewDelegate) {

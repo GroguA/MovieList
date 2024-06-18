@@ -12,6 +12,7 @@ protocol IMovieListController: AnyObject {
     func showError(_ error: String?)
     func showLoadingProccess()
     func hideLoadingProccess()
+    func showStorageError(_ error: String)
 }
 
 class MovieListViewController: UIViewController {
@@ -111,6 +112,11 @@ extension MovieListViewController: IMovieListController {
             self.contentView.errorLabel.isHidden = true
             self.contentView.retryButton.isHidden = true
         }
+    }
+    
+    func showStorageError(_ error: String) {
+        contentView.errorAlert.message = error
+        self.present(contentView.errorAlert, animated: true)
     }
     
 }

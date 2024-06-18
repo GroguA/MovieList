@@ -82,7 +82,7 @@ extension MovieListPresenter: IMovieListPresenter {
                 self.ui?.showMovies(movies)
             }
         } catch CoreDataErrors.runtimeError(let message) {
-            self.ui?.showError(message)
+            self.ui?.showStorageError(message)
         } catch {
             self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
@@ -96,7 +96,7 @@ extension MovieListPresenter: IMovieListPresenter {
                 self.ui?.showMovies(movies)
             }
         } catch CoreDataErrors.runtimeError(let message) {
-            self.ui?.showError(message)
+            self.ui?.showStorageError(message)
         } catch {
             self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
