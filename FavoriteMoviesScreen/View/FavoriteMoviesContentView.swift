@@ -8,7 +8,6 @@
 import UIKit
 
 final class FavoriteMoviesContentView: UIView {
-    
     lazy var favoriteMoviesTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(FavoriteMoviesTableViewCell.self, forCellReuseIdentifier: FavoriteMoviesTableViewCell.identifier)

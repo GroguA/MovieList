@@ -12,7 +12,6 @@ enum FavoriteMoviesAssembly {
         let interactor = FavoriteMoviesInteractor()
         let presenter = FavoriteMoviesPresenter(interactor: interactor)
         let view = FavoriteMoviesViewController(presenter: presenter)
-        
         return view
     }
 }

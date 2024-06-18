@@ -20,21 +20,22 @@ final class FavoriteMoviesInteractor {
 
 extension FavoriteMoviesInteractor: IFavoriteMoviesInteractor {
     func loadFavoriteMovies(
-        completion: @escaping ([FavoriteMovieModel]) -> Void) {
-            var favoriteMovies = [FavoriteMovieCoreDataModel]()
+        completion: @escaping ([FavoriteMovieModel]) -> Void
+    ) {
             var favoriteMappedMovieModels = [FavoriteMovieModel]()
             do {
-                favoriteMovies = try self.serviceLocator.favoriteMoviesService.fetchFavoriteMovies()
+                let favoriteMovies = try serviceLocator.favoriteMoviesService.fetchFavoriteMovies()
+                
+                favoriteMappedMovieModels = favoriteMovies.map { movie in
+                    return FavoriteMovieModel(
+                        id: movie.id,
+                        pathToImage: movie.pathToImage,
+                        title: movie.title
+                    )
+                }
             } catch {
                 favoriteMappedMovieModels = []
             }
-            favoriteMovies.forEach({ movie in
-                let favoriteMovie = FavoriteMovieModel(
-                    id: movie.id,
-                    pathToImage: movie.pathToImage,
-                    title: movie.title)
-                favoriteMappedMovieModels.append(favoriteMovie)
-            })
             completion(favoriteMappedMovieModels)
         }
     

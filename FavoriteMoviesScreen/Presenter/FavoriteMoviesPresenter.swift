@@ -8,9 +8,9 @@
 import Foundation
 
 protocol IFavoriteMoviesPresenter {
+    var onMovieDeleted: ((FavoriteMovieModel) -> Void)? {get set}
     func didLoad(ui: IFavoriteMoviesViewController)
     func movieDeleted(at index: Int)
-    var onMovieDeleted: ((FavoriteMovieModel) -> Void)? {get set}
 }
 
 final class FavoriteMoviesPresenter {
