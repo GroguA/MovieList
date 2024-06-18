@@ -55,7 +55,6 @@ extension FavoriteMoviesViewController: IFavoriteMoviesViewController {
         contentView.tableViewDataSource?.applySnapshot(with: movies)
         contentView.favoriteMoviesTableView.isHidden = false
         contentView.noFavoriteMoviesLabel.isHidden = true
-
     }
     
     func showFavoriteMoviesAreEmpty() {

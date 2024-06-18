@@ -57,7 +57,6 @@ private extension FavoriteMoviesTableViewCell {
         setConstraints()
     }
     
-    
     func setConstraints() {
         let constraints = [
             moviePoster.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
@@ -67,9 +66,9 @@ private extension FavoriteMoviesTableViewCell {
             
             movieTitle.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 8),
             movieTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            movieTitle.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -8),
-            
+            movieTitle.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -8)
         ]
+        
         NSLayoutConstraint.activate(constraints)
     }
 }
