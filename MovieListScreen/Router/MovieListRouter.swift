@@ -7,13 +7,20 @@
 
 import UIKit
 
-protocol CarsListRouterProtocol: AnyObject {
-    static func showFavoriteMoviesScreen(navigationController: UINavigationController?)
+protocol IMovieListRouter: AnyObject {
+    func showFavoriteMoviesScreen(onMovieDeleted: @escaping (FavoriteMovieModel) -> Void)
 }
 
-final class MovieListRouter {
-        static func showFavoriteMoviesScreen(navigationController: UINavigationController?) {
-            let viewController = FavoriteMoviesAssembly.createFavoriteMoviesModule()
-            navigationController?.pushViewController(viewController, animated: true)
-        }
+final class MovieListRouter: IMovieListRouter {
+    private let navigationController: UINavigationController
+    
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
+    }
+    
+    func showFavoriteMoviesScreen(onMovieDeleted: @escaping (FavoriteMovieModel) -> Void) {
+        let viewController = FavoriteMoviesAssembly.createFavoriteMoviesModule()
+        viewController.onMovieDeleted = onMovieDeleted
+        navigationController.pushViewController(viewController, animated: true)
+    }
 }

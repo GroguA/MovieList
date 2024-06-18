@@ -15,6 +15,7 @@ protocol IMovieListInteractor {
     func fetchMoviesByQuery(_ query: String, completion: @escaping (Result<[MovieModel], Error>) -> Void)
     func searchStopped()
     func updateMovies(completion: (([MovieModel]) -> Void))
+    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel)
 }
 
 final class MovieListInteractor {
@@ -110,6 +111,13 @@ extension MovieListInteractor: IMovieListInteractor {
     func searchStopped() {
         isSearching = false
         currentMovies = moviesBeforeSearchStarted
+    }
+    
+    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
+        if let index = currentMovies.firstIndex(where: { $0.id == deletedMovie.id }), let movie = currentMovies.first(where: { $0.id == deletedMovie.id }) {
+            let newMovie = MovieModel(id: deletedMovie.id, title: deletedMovie.title, pathToImage: deletedMovie.pathToImage, isMovieFavorite: false, likeIconPath: movie.likeIconPath, dislikeIconPath: movie.dislikeIconPath)
+            currentMovies[index] = newMovie
+        }
     }
     
     func updateMovies(completion: (([MovieModel]) -> Void)) {

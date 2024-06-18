@@ -12,7 +12,6 @@ protocol IMovieListController: AnyObject {
     func showError(_ error: String?)
     func showLoadingProccess()
     func hideLoadingProccess()
-    func updateMovies(_ movies: [MovieModel])
 }
 
 class MovieListViewController: UIViewController {
@@ -66,7 +65,7 @@ private extension MovieListViewController {
     }
     
     @objc func showFavoriteMoviesButtonTapped() {
-        MovieListRouter.showFavoriteMoviesScreen(navigationController: navigationController)
+        presenter.showFavoriteMoviesClicked()
     }
     
 }
@@ -78,12 +77,6 @@ extension MovieListViewController: IMovieListController {
             self.contentView.errorLabel.isHidden = true
             self.contentView.retryButton.isHidden = true
             self.contentView.collectionViewDataSource?.applySnapshot(with: movies)
-        }
-    }
-    
-    func updateMovies(_ movies: [MovieModel]) {
-        DispatchQueue.main.async {
-            self.contentView.collectionViewDataSource?.reloadSnapshot(with: movies)
         }
     }
     
