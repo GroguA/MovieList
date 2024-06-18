@@ -15,11 +15,8 @@ protocol IFavoriteMoviesPresenter {
 
 final class FavoriteMoviesPresenter {
     var onMovieDeleted: ((FavoriteMovieModel) -> Void)?
-    
     private weak var ui: IFavoriteMoviesViewController?
-    
     private var movies = [FavoriteMovieModel]()
-    
     private var interactor: IFavoriteMoviesInteractor
     
     init(interactor: IFavoriteMoviesInteractor) {

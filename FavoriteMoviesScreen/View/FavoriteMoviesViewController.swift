@@ -15,9 +15,7 @@ protocol IFavoriteMoviesViewController: AnyObject {
 
 final class FavoriteMoviesViewController: UIViewController {
     var onMovieDeleted: ((FavoriteMovieModel) -> Void)?
-    
     private lazy var contentView = FavoriteMoviesContentView(delegate: self)
-    
     private var presenter: IFavoriteMoviesPresenter
         
     init(presenter: IFavoriteMoviesPresenter) {

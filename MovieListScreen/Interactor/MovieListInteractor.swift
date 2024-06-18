@@ -19,15 +19,10 @@ protocol IMovieListInteractor {
 }
 
 final class MovieListInteractor {
-    
     private var currentMovies = [MovieModel]()
-    
     private var currentPage = 1
-    
     private var moviesBeforeSearchStarted = [MovieModel]()
-    
     private var isSearching = false
-    
     private let serviceLocator = ServiceLocator.shared
     
 }
@@ -37,7 +32,7 @@ extension MovieListInteractor: IMovieListInteractor {
         serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
             switch result {
             case .success(let movies):
-                let mappedMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
+                let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies).unique()
                 self.moviesBeforeSearchStarted = mappedMovies
                 self.currentMovies = mappedMovies
                 completion(.success(mappedMovies))
@@ -55,7 +50,7 @@ extension MovieListInteractor: IMovieListInteractor {
         serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
             switch result {
             case .success(let movies):
-                let newMovies = self.mapMoviesSchemeToMovieModels(movies).unique()
+                let newMovies = self.mapMoviesSchemeToMoviesModel(movies).unique()
                 let mergedMovies = self.currentMovies + newMovies
                 self.currentMovies = mergedMovies
                 completion(.success(mergedMovies))
@@ -73,7 +68,7 @@ extension MovieListInteractor: IMovieListInteractor {
         serviceLocator.networkService.searchMovieByQuery(query) { result in
             switch result {
             case .success(let movies):
-                let mappedMovies = self.mapMoviesSchemeToMovieModels(movies)
+                let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies)
                 self.currentMovies = mappedMovies
                 completion(.success(mappedMovies))
             case .failure(let error):
@@ -127,7 +122,7 @@ extension MovieListInteractor: IMovieListInteractor {
 }
 
 private extension MovieListInteractor {
-    func mapMoviesSchemeToMovieModels(_ movies: [MovieScheme]) -> [MovieModel] {
+    func mapMoviesSchemeToMoviesModel(_ movies: [MovieScheme]) -> [MovieModel] {
         let pathToImage = "https://image.tmdb.org/t/p/w500"
         var favoriteMovies = [FavoriteMovieCoreDataModel]()
         
@@ -160,11 +155,11 @@ private extension MovieListInteractor {
         }
     }
     
-    private func updateFavoriteStatus(for deletedMovie: FavoriteMovieModel, in movieArray: inout [MovieModel]) {
-        if let index = movieArray.firstIndex(where: { $0.id == deletedMovie.id }) {
-            let movie = movieArray[index]
+    private func updateFavoriteStatus(for deletedMovie: FavoriteMovieModel, in moviesArray: inout [MovieModel]) {
+        if let index = moviesArray.firstIndex(where: { $0.id == deletedMovie.id }) {
+            let movie = moviesArray[index]
             let newMovie = movie.copyWith(isMovieFavorite: false)
-            movieArray[index] = newMovie
+            moviesArray[index] = newMovie
         }
     }
 }
