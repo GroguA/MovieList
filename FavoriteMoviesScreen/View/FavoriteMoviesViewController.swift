@@ -9,6 +9,8 @@ import UIKit
 
 protocol IFavoriteMoviesViewController: AnyObject {
     func showMovies(_ movies: [FavoriteMovieModel])
+    func showFavoriteMoviesAreEmpty()
+    func showError(with message: String)
 }
 
 final class FavoriteMoviesViewController: UIViewController {
@@ -50,9 +52,21 @@ final class FavoriteMoviesViewController: UIViewController {
 
 extension FavoriteMoviesViewController: IFavoriteMoviesViewController {
     func showMovies(_ movies: [FavoriteMovieModel]) {
-        self.contentView.tableViewDataSource?.applySnapshot(with: movies)
+        contentView.tableViewDataSource?.applySnapshot(with: movies)
+        contentView.favoriteMoviesTableView.isHidden = false
+        contentView.noFavoriteMoviesLabel.isHidden = true
+
     }
     
+    func showFavoriteMoviesAreEmpty() {
+        contentView.favoriteMoviesTableView.isHidden = true
+        contentView.noFavoriteMoviesLabel.isHidden = false
+    }
+    
+    func showError(with message: String) {
+        contentView.errorAlert.message = message
+        self.present(contentView.errorAlert, animated: true)
+    }
 }
 
 extension FavoriteMoviesViewController: UITableViewDelegate {

@@ -32,7 +32,11 @@ extension FavoriteMoviesPresenter: IFavoriteMoviesPresenter {
         self.ui = ui
         interactor.loadFavoriteMovies { movies in
             self.movies = movies
-            self.ui?.showMovies(movies)
+            if !movies.isEmpty {
+                self.ui?.showMovies(movies)
+            } else {
+                self.ui?.showFavoriteMoviesAreEmpty()
+            }
         }
     }
     
@@ -43,8 +47,13 @@ extension FavoriteMoviesPresenter: IFavoriteMoviesPresenter {
             try interactor.deleteMovie(by: deletedMovie.id)
             ui?.showMovies(movies)
             onMovieDeleted?(deletedMovie)
+            if movies.isEmpty {
+                ui?.showFavoriteMoviesAreEmpty()
+            }
+        } catch CoreDataErrors.runtimeError(let message) {
+            ui?.showError(with: message)
         } catch {
-            
+            ui?.showError(with: "An unexpected error occurred: \(error.localizedDescription)")
         }
     }
     
