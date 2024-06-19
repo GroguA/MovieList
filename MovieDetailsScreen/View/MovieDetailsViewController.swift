@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol IMovieDetailsViewController: AnyObject {
+    func showMovie(_ movie: MovieDetailsModel)
+}
+
 final class MovieDetailsViewController: UIViewController {
 
     private let contentView = MovieDetailsContentView()
@@ -26,6 +30,12 @@ final class MovieDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         setupView()
+    }
+}
+
+extension MovieDetailsViewController: IMovieDetailsViewController {
+    func showMovie(_ movie: MovieDetailsModel) {
+        
     }
 }
 
