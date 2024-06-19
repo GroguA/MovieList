@@ -7,23 +7,31 @@
 
 import UIKit
 
-class MovieDetailsViewController: UIViewController {
+final class MovieDetailsViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    private let contentView = MovieDetailsContentView()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-    */
+    
+    override func loadView() {
+        view = contentView
+    }
+    
+    override func viewDidLoad() {
+        setupView()
+    }
+}
 
+private extension MovieDetailsViewController {
+    func setupView() {
+        view.backgroundColor = .systemBackground
+        navigationItem.title = "Movie details"
+    }
 }
