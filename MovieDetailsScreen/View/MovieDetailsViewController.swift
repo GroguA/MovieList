@@ -9,13 +9,17 @@ import UIKit
 
 protocol IMovieDetailsViewController: AnyObject {
     func showMovie(_ movie: MovieDetailsModel)
+    func showErorr(_ error: String)
+    func showLoadingProccess()
+    func hideLoadingProccess()
 }
 
 final class MovieDetailsViewController: UIViewController {
-
+    private let presenter: IMovieDetailsPresenter
     private let contentView = MovieDetailsContentView()
     
-    init() {
+    init(presenter: IMovieDetailsPresenter) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -29,19 +33,57 @@ final class MovieDetailsViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        setupView()
+        setupViews()
+        presenter.didLoad(ui: self) { title in
+            self.callResultOnMain {
+                self.navigationItem.title = title
+            }
+        }
     }
 }
 
 extension MovieDetailsViewController: IMovieDetailsViewController {
     func showMovie(_ movie: MovieDetailsModel) {
-        
+        callResultOnMain {
+            self.contentView.fillMovieInfo(with: movie)
+        }
+    }
+    
+    func showErorr(_ error: String) {
+        callResultOnMain {
+            self.contentView.showErrorText(error)
+        }
+    }
+    
+    func showLoadingProccess() {
+        callResultOnMain {
+            self.contentView.setActivityViewPresentation(true)
+        }
+    }
+    
+    func hideLoadingProccess() {
+        callResultOnMain {
+            self.contentView.setActivityViewPresentation()
+        }
     }
 }
 
 private extension MovieDetailsViewController {
-    func setupView() {
-        view.backgroundColor = .systemBackground
-        navigationItem.title = "Movie details"
+    func setupViews() {
+        contentView.retryButton.addTarget(self, action: #selector(retryLoadingMovie), for: .touchUpInside)
+    }
+    
+    @objc func retryLoadingMovie() {
+        presenter.didLoad(ui: self) { title in
+            DispatchQueue.main.async {
+                self.navigationItem.title = title
+            }
+        }
+    }
+    
+    func callResultOnMain(result: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            result()
+        }
     }
 }
