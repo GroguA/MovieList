@@ -9,6 +9,7 @@ import UIKit
 
 protocol IMovieListRouter: AnyObject {
     func showFavoriteMoviesScreen(onMovieDeleted: @escaping (FavoriteMovieModel) -> Void)
+    func showMovieDetailsScreen(movieId: Int)
 }
 
 final class MovieListRouter: IMovieListRouter {
@@ -21,6 +22,11 @@ final class MovieListRouter: IMovieListRouter {
     func showFavoriteMoviesScreen(onMovieDeleted: @escaping (FavoriteMovieModel) -> Void) {
         let viewController = FavoriteMoviesAssembly.createFavoriteMoviesModule()
         viewController.onMovieDeleted = onMovieDeleted
+        navigationController.pushViewController(viewController, animated: true)
+    }
+    
+    func showMovieDetailsScreen(movieId: Int) {
+        let viewController = MovieDetailsAssembly.createMovieDetailsModule(with: movieId)
         navigationController.pushViewController(viewController, animated: true)
     }
 }
