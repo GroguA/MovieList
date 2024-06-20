@@ -20,7 +20,7 @@ final class MovieListRouter: IMovieListRouter {
     }
     
     func showFavoriteMoviesScreen(onMovieDeleted: @escaping (FavoriteMovieModel) -> Void) {
-        let viewController = FavoriteMoviesAssembly.createFavoriteMoviesModule()
+        let viewController = FavoriteMoviesAssembly.createFavoriteMoviesModule(with: navigationController)
         viewController.onMovieDeleted = onMovieDeleted
         navigationController.pushViewController(viewController, animated: true)
     }

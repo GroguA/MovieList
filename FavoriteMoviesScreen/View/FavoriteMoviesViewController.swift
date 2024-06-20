@@ -67,6 +67,10 @@ extension FavoriteMoviesViewController: IFavoriteMoviesViewController {
 }
 
 extension FavoriteMoviesViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.presenter.onMovieTapped(at: indexPath.row)
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 130
     }

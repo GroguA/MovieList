@@ -77,9 +77,7 @@ private extension MovieNetworkService {
                 completion(.failure(NetworkErrors.invalidResponse))
                 return
             }
-            
-            sleep(1)
-            
+                        
             switch httpResponse.statusCode {
             case 200..<300:
                 self.mapper.parse(responseType, from: data, completion: completion)

@@ -11,16 +11,19 @@ protocol IFavoriteMoviesPresenter {
     var onMovieDeleted: ((FavoriteMovieModel) -> Void)? {get set}
     func didLoad(ui: IFavoriteMoviesViewController)
     func movieDeleted(at index: Int)
+    func onMovieTapped(at index: Int)
 }
 
 final class FavoriteMoviesPresenter {
     var onMovieDeleted: ((FavoriteMovieModel) -> Void)?
     private weak var ui: IFavoriteMoviesViewController?
     private var movies = [FavoriteMovieModel]()
-    private var interactor: IFavoriteMoviesInteractor
+    private let interactor: IFavoriteMoviesInteractor
+    private let router: IFavoriteMoviesRouter
     
-    init(interactor: IFavoriteMoviesInteractor) {
+    init(interactor: IFavoriteMoviesInteractor, router: IFavoriteMoviesRouter) {
         self.interactor = interactor
+        self.router = router
     }
 }
 
@@ -52,6 +55,10 @@ extension FavoriteMoviesPresenter: IFavoriteMoviesPresenter {
         } catch {
             ui?.showError(with: "An unexpected error occurred: \(error.localizedDescription)")
         }
+    }
+    
+    func onMovieTapped(at index: Int) {
+        router.showMovieDetailsScreen(movieId: movies[index].id)
     }
     
 }

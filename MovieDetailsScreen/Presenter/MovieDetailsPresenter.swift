@@ -15,6 +15,7 @@ final class MovieDetailsPresenter {
     private weak var ui: IMovieDetailsViewController?
     private var interactor: IMovieDetailsInteractor
     
+    
     init(interactor: IMovieDetailsInteractor) {
         self.interactor = interactor
     }
