@@ -21,11 +21,8 @@ protocol IMovieListPresenter {
 
 final class MovieListPresenter {
     private weak var ui: IMovieListController?
-    
     private var movies = [MovieModel]()
-    
     private let interactor: IMovieListInteractor
-    
     private let router: IMovieListRouter
     
     init(interactor: IMovieListInteractor, router: IMovieListRouter) {
@@ -51,7 +48,7 @@ extension MovieListPresenter: IMovieListPresenter {
     }
     
     func movieDidChoose(at index: Int) {
-        
+        router.showMovieDetailsScreen(movieId: movies[index].id)
     }
     
     func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
