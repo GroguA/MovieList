@@ -15,14 +15,10 @@ protocol IMovieListController: AnyObject {
     func showStorageError(_ error: String)
 }
 
-class MovieListViewController: UIViewController {
-    
+final class MovieListViewController: UIViewController {
     private lazy var contentView = MovieListContentView(delegate: self)
-    
     private lazy var searchController = contentView.searchController
-    
     private var previousIndexPath: IndexPath? = nil
-    
     private let presenter: IMovieListPresenter
     
     init(presenter: IMovieListPresenter) {
@@ -147,8 +143,8 @@ extension MovieListViewController:  UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         presenter.searchStopped()
         if let previousIndexPath = previousIndexPath {
-                if let itemCount = self.contentView.collectionViewDataSource?.dataSource?.snapshot().numberOfItems, previousIndexPath.row < itemCount {
-                    self.contentView.moviesCollectionView.scrollToItem(at: previousIndexPath, at: .top, animated: true)
+            if let itemCount = self.contentView.collectionViewDataSource?.dataSource?.snapshot().numberOfItems, previousIndexPath.row < itemCount {
+                self.contentView.moviesCollectionView.scrollToItem(at: previousIndexPath, at: .top, animated: true)
             }
         }
     }

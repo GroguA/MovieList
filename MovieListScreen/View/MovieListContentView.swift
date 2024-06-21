@@ -7,8 +7,7 @@
 
 import UIKit
 
-class MovieListContentView: UIView {
-    
+final class MovieListContentView: UIView {
     lazy var moviesCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.backgroundColor = .systemBackground
@@ -143,5 +142,5 @@ private extension MovieListContentView {
         
         return layout
     }
-
+    
 }
