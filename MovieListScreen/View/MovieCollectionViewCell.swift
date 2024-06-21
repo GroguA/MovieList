@@ -79,6 +79,8 @@ final class MovieCollectionViewCell: UICollectionViewCell {
             dislikeImage.isHidden = false
         }
         
+        likeImage.image = nil
+        dislikeImage.image = nil
         moviePoster.image = nil
         movieTitle.text = movie.title
         likeImage.image = UIImage(systemName: movie.likeIconPath)

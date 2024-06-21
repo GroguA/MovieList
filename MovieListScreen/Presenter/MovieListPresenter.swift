@@ -52,8 +52,7 @@ extension MovieListPresenter: IMovieListPresenter {
     }
     
     func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
-        interactor.movieDeletedFromFavorite(deletedMovie)
-        interactor.updateMovies { [weak self] movies in
+        interactor.movieDeletedFromFavorite(deletedMovie) { [weak self] movies in
             self?.movies = movies
             self?.ui?.showMovies(movies)
         }
@@ -73,8 +72,7 @@ extension MovieListPresenter: IMovieListPresenter {
     
     func movieDisliked(at index: Int) {
         do {
-            try interactor.dislikeMovie(at: index)
-            interactor.updateMovies { [weak self] movies in
+            try interactor.dislikeMovie(at: index) { [weak self] movies in
                 self?.movies = movies
                 self?.ui?.showMovies(movies)
             }
@@ -87,8 +85,7 @@ extension MovieListPresenter: IMovieListPresenter {
     
     func movieLiked(at index: Int) {
         do {
-            try interactor.likeMovie(at: index)
-            interactor.updateMovies { [weak self] movies in
+            try interactor.likeMovie(at: index){ [weak self] movies in
                 self?.movies = movies
                 self?.ui?.showMovies(movies)
             }
@@ -116,8 +113,7 @@ extension MovieListPresenter: IMovieListPresenter {
     }
     
     func searchStopped() {
-        interactor.searchStopped()
-        interactor.updateMovies { [weak self] movies in
+        interactor.searchStopped { [weak self] movies in
             self?.movies = movies
             self?.ui?.showMovies(movies)
         }

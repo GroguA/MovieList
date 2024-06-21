@@ -33,8 +33,8 @@ final class MovieListCollectionViewDataSource {
                 ) as? MovieCollectionViewCell else { return nil }
                 
                 cell.fillCell(with: movie,
-                              onLikeButtonClicked: { self.likeMovie(at: indexPath.item)},
-                              onDislikeButtonClicked: { self.dislikeMovie(at: indexPath.item)}
+                              onLikeButtonClicked: { self.likeMovie(movie)},
+                              onDislikeButtonClicked: { self.dislikeMovie(movie)}
                 )
                 return cell
             })
@@ -49,12 +49,14 @@ final class MovieListCollectionViewDataSource {
 }
 
 private extension MovieListCollectionViewDataSource {
-    func likeMovie(at index: Int) {
-        self.presenter?.movieLiked(at: index)
+    func likeMovie(_ movie: MovieModel) {
+        guard let index = dataSource?.snapshot().indexOfItem(movie) else { return }
+        presenter?.movieLiked(at: index)
     }
     
-    func dislikeMovie(at index: Int) {
-        self.presenter?.movieDisliked(at: index)
+    func dislikeMovie(_ movie: MovieModel) {
+        guard let index = dataSource?.snapshot().indexOfItem(movie) else { return }
+        presenter?.movieDisliked(at: index)
     }
+    
 }
-

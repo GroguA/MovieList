@@ -10,12 +10,11 @@ import Foundation
 protocol IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
     func loadMoreMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void)
-    func dislikeMovie(at index: Int) throws
-    func likeMovie(at index: Int) throws
+    func dislikeMovie(at index: Int, completion: (([MovieModel]) -> Void)) throws
+    func likeMovie(at index: Int, completion: (([MovieModel]) -> Void)) throws
     func fetchMoviesByQuery(_ query: String, completion: @escaping (Result<[MovieModel], Error>) -> Void)
-    func searchStopped()
-    func updateMovies(completion: (([MovieModel]) -> Void))
-    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel)
+    func searchStopped(completion: (([MovieModel]) -> Void))
+    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel, completion: (([MovieModel]) -> Void))
 }
 
 final class MovieListInteractor {
@@ -82,22 +81,26 @@ extension MovieListInteractor: IMovieListInteractor {
         }
     }
     
-    func dislikeMovie(at index: Int) throws {
+    func dislikeMovie(at index: Int, completion: (([MovieModel]) -> Void)) throws {
         let updatedMovie: MovieModel
         let movie = currentMovies[index]
         updatedMovie = movie.copyWith(isMovieFavorite: false)
         currentMovies[index] = updatedMovie
         updateIsMovieFavorite(updatedMovie)
         
+        completion(currentMovies)
+        
         try serviceLocator.favoriteMoviesService.removeMovieFromFavorites(by: movie.id)
     }
     
-    func likeMovie(at index: Int) throws {
+    func likeMovie(at index: Int, completion: (([MovieModel]) -> Void)) throws {
         let updatedMovie: MovieModel
         let movie = currentMovies[index]
         updatedMovie = movie.copyWith(isMovieFavorite: true)
         currentMovies[index] = updatedMovie
         updateIsMovieFavorite(updatedMovie)
+        
+        completion(currentMovies)
         
         let coreDataModel = FavoriteMovieCoreDataModel(
             id: movie.id,
@@ -108,19 +111,17 @@ extension MovieListInteractor: IMovieListInteractor {
         try serviceLocator.favoriteMoviesService.addMovieToFavorites(coreDataModel)
     }
     
-    func searchStopped() {
+    func searchStopped(completion: (([MovieModel]) -> Void)) {
         isSearching = false
         currentMovies = moviesBeforeSearchStarted
+        completion(currentMovies)
     }
     
-    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
+    func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel, completion: (([MovieModel]) -> Void)) {
         updateFavoriteStatus(for: deletedMovie, in: &currentMovies)
         if isSearching {
             updateFavoriteStatus(for: deletedMovie, in: &moviesBeforeSearchStarted)
         }
-    }
-    
-    func updateMovies(completion: (([MovieModel]) -> Void)) {
         completion(currentMovies)
     }
     
@@ -155,9 +156,8 @@ private extension MovieListInteractor {
     }
     
     func updateIsMovieFavorite(_ movie: MovieModel) {
-        if let index = moviesBeforeSearchStarted.firstIndex(where: { $0.id == movie.id }) {
+        guard let index = moviesBeforeSearchStarted.firstIndex(where: { $0.id == movie.id })  else { return }
             moviesBeforeSearchStarted[index] = movie
-        }
     }
     
     private func updateFavoriteStatus(for deletedMovie: FavoriteMovieModel, in moviesArray: inout [MovieModel]) {
