@@ -114,6 +114,7 @@
 		7C0336672C1B34E1009BF355 = {
 			isa = PBXGroup;
 			children = (
+				7CABAACA2C2600C100DB98F0 /* Readme.md */,
 				7CABAA642C23052300DB98F0 /* Factories */,
 				7CABAA5B2C22452800DB98F0 /* MovieDetailsScreen */,
 				7CABAA402C2071A400DB98F0 /* FavoriteMoviesScreen */,
@@ -143,7 +144,6 @@
 				7C0336812C1B34E4009BF355 /* LaunchScreen.storyboard */,
 				7C0336842C1B34E4009BF355 /* Info.plist */,
 				7C03368D2C1B35FF009BF355 /* .gitignore */,
-				7CABAACA2C2600C100DB98F0 /* Readme.md */,
 			);
 			path = MovieList;
 			sourceTree = "<group>";
