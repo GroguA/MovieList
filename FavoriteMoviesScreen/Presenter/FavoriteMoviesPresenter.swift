@@ -30,12 +30,12 @@ final class FavoriteMoviesPresenter {
 extension FavoriteMoviesPresenter: IFavoriteMoviesPresenter {
     func didLoad(ui: IFavoriteMoviesViewController) {
         self.ui = ui
-        interactor.loadFavoriteMovies { movies in
-            self.movies = movies
+        interactor.loadFavoriteMovies { [weak self] movies in
+            self?.movies = movies
             if !movies.isEmpty {
-                self.ui?.showMovies(movies)
+                self?.ui?.showMovies(movies)
             } else {
-                self.ui?.showFavoriteMoviesAreEmpty()
+                self?.ui?.showFavoriteMoviesAreEmpty()
             }
         }
     }
