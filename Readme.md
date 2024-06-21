@@ -1,4 +1,4 @@
-##Overview
+# Overview
 
 Movie App is an iOS application designed to showcase popular movies fetched from an API. 
 
@@ -9,8 +9,8 @@ It features three main screens:
 
 The app is built using the VIPER architecture for modular and scalable development.
 
-##Features
-###Movie List Screen
+# Features
+## Movie List Screen
 
 Displays a collection of popular movies fetched from an API.
 Allows users to like or dislike movies. 
@@ -21,7 +21,7 @@ Provides navigation to the favorites screen to view saved movies.
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/movieListScreenLight.png?raw=true" height="400" />
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/movieListScreenDark.png?raw=true" height="400" />
 
-###Movie Details Screen
+## Movie Details Screen
 
 Accessed by tapping on a movie from the movie list screen or favorite movies screen.
 
@@ -38,7 +38,7 @@ Shows the:
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/movieDetailsScreenLight.png?raw=true" height="400" />
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/movieListScreenDark.png?raw=true" height="400" />
 
-###Favorites Screen
+## Favorites Screen
 
 Displays a list of movies marked as favorites in a UITableView.
 
@@ -47,7 +47,7 @@ Allows users to view and manage their favorite movies, including removing movies
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/favoriteMoviesScreenLight.png?raw=true" height="400" />
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/favoriteMoviesScreenDark.png?raw=true" height="400" />
 
-##Architecture
+# Architecture
 
 The application is structured using the VIPER architecture, which stands for View, Interactor, Presenter, Entity, and
 Router. 
@@ -59,7 +59,7 @@ Presenter: Mediates between the view and the interactor, formatting data for dis
 Entity: Represents data objects used by the interactor.
 Router: Handles navigation between different screens/modules within the app.
 
-##Technologies Used
+# Technologies Used
 
 URLSession: Used for network requests to fetch movie data from the API.
 AutoLayout: Used for defining the layout constraints programmatically to ensure the app's user interface adapts to
@@ -73,7 +73,7 @@ flexibility.
 Factory Pattern: Implemented to manage the creation of various components or services in a centralized manner,
 enhancing modularity and reducing dependencies.
 
-##Note for Users in Russia
+# Note for Users in Russia
 
 Due to regulatory requirements, users from Russia may need to use a VPN to ensure the correct operation of the
 application. 
