@@ -105,9 +105,10 @@ extension MovieListPresenter: IMovieListPresenter {
             case .success(let movies):
                 if movies.isEmpty {
                     self?.ui?.showError("Such movie not found")
+                } else {
+                    self?.movies = movies
+                    self?.ui?.showMovies(movies)
                 }
-                self?.movies = movies
-                self?.ui?.showMovies(movies)
             case .failure(let error):
                 self?.ui?.showError(error.localizedDescription)
             }

@@ -21,6 +21,8 @@ class MovieListViewController: UIViewController {
     
     private lazy var searchController = contentView.searchController
     
+    private var previousIndexPath: IndexPath? = nil
+    
     private let presenter: IMovieListPresenter
     
     init(presenter: IMovieListPresenter) {
@@ -101,6 +103,7 @@ extension MovieListViewController: IMovieListController {
             self?.contentView.moviesCollectionView.isHidden = true
             self?.contentView.errorLabel.isHidden = true
             self?.contentView.retryButton.isHidden = true
+            self?.searchController.searchBar.text = nil
         }
     }
     
@@ -134,7 +137,7 @@ extension MovieListViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let movies = contentView.collectionViewDataSource?.dataSource?.snapshot().itemIdentifiers else { return }
-        if (indexPath.item == movies.count - 1) {
+        if indexPath.item == (movies.count - 1) {
             presenter.moviesScrolled()
         }
     }
@@ -143,6 +146,11 @@ extension MovieListViewController: UICollectionViewDelegate {
 extension MovieListViewController:  UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         presenter.searchStopped()
+        if let previousIndexPath = previousIndexPath {
+                if let itemCount = self.contentView.collectionViewDataSource?.dataSource?.snapshot().numberOfItems, previousIndexPath.row < itemCount {
+                    self.contentView.moviesCollectionView.scrollToItem(at: previousIndexPath, at: .top, animated: true)
+            }
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -153,11 +161,17 @@ extension MovieListViewController:  UISearchBarDelegate {
         let optEncodedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
         guard let encodedText = optEncodedText else { return }
         
+        let visibleIndexPaths = contentView.moviesCollectionView.indexPathsForVisibleItems.sorted()
+        
+        if !visibleIndexPaths.isEmpty {
+            previousIndexPath = visibleIndexPaths.first
+        }
+        
         presenter.searchStartedBy(query: encodedText)
         
         if let movies = contentView.collectionViewDataSource?.dataSource?.snapshot().itemIdentifiers, !movies.isEmpty {
             let indexPath = IndexPath(row: 0, section: 0)
-            contentView.moviesCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+            self.contentView.moviesCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
         }
     }
 }
