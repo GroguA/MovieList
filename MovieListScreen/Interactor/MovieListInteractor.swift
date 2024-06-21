@@ -30,6 +30,7 @@ final class MovieListInteractor {
 extension MovieListInteractor: IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
         serviceLocator.networkService.getPopularMovies(page: currentPage) { [weak self] result in
+            self?.currentPage = 1
             guard let self else { return }
             switch result {
             case .success(let movies):
@@ -108,7 +109,6 @@ extension MovieListInteractor: IMovieListInteractor {
     
     func searchStopped() {
         isSearching = false
-        currentPage = 1
         currentMovies = moviesBeforeSearchStarted
     }
     
