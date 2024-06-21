@@ -49,6 +49,7 @@
 		7CABAA732C230C4E00DB98F0 /* MovieDetailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA722C230C4E00DB98F0 /* MovieDetailsInteractor.swift */; };
 		7CABAA762C23161800DB98F0 /* MovieDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA752C23161800DB98F0 /* MovieDetailsAssembly.swift */; };
 		7CABAAC92C24658300DB98F0 /* FavoriteMoviesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAAC82C24658300DB98F0 /* FavoriteMoviesRouter.swift */; };
+		7CABAACB2C2600C100DB98F0 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 7CABAACA2C2600C100DB98F0 /* Readme.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +97,7 @@
 		7CABAA722C230C4E00DB98F0 /* MovieDetailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsInteractor.swift; sourceTree = "<group>"; };
 		7CABAA752C23161800DB98F0 /* MovieDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsAssembly.swift; sourceTree = "<group>"; };
 		7CABAAC82C24658300DB98F0 /* FavoriteMoviesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMoviesRouter.swift; sourceTree = "<group>"; };
+		7CABAACA2C2600C100DB98F0 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				7C0336812C1B34E4009BF355 /* LaunchScreen.storyboard */,
 				7C0336842C1B34E4009BF355 /* Info.plist */,
 				7C03368D2C1B35FF009BF355 /* .gitignore */,
+				7CABAACA2C2600C100DB98F0 /* Readme.md */,
 			);
 			path = MovieList;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 			files = (
 				7C0336802C1B34E4009BF355 /* Assets.xcassets in Resources */,
 				7C03368E2C1B35FF009BF355 /* .gitignore in Resources */,
+				7CABAACB2C2600C100DB98F0 /* Readme.md in Resources */,
 				7C0336832C1B34E4009BF355 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
