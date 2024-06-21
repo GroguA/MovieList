@@ -23,7 +23,8 @@ final class MovieDetailsInteractor {
 
 extension MovieDetailsInteractor: IMovieDetailsInteractor {
     func fetchMovieDetails(completion: @escaping (Result<MovieDetailsModel, Error>) -> Void) {
-        serviceLocator.networkService.getMovieDetailsById(movieId) { result in
+        serviceLocator.networkService.getMovieDetailsById(movieId) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let movie):
                 let mappedMovie = self.mapMovieSchemeToMovieModel(movie)
@@ -43,10 +44,8 @@ private extension MovieDetailsInteractor {
         
         if movie.budget == 0 {
             budgetText = "not stated"
-        } else if movie.budget / 1_000_000 != 0 {
-            budgetText = "\(movie.budget / 1_000_000) millions $"
         } else {
-            budgetText = "\(movie.budget / 100_000) thousand $"
+            budgetText = "\(movie.budget.formatted())  $"
         }
         
         let genres = movie.genres.map { $0.name }.joined(separator: ", ")

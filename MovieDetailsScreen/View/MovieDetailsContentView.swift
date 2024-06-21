@@ -91,7 +91,7 @@ final class MovieDetailsContentView: UIView {
     func fillMovieInfo(with movie: MovieDetailsModel) {
         errorLabel.isHidden = true
         retryButton.isHidden = true
-        setVisibleOfViews()
+        setVisibilityOfViews()
         
         if let pathToImage = movie.pathToImage {
             serviceLocator.imageDownloader.fetchImage(pathToImage: pathToImage, imageView: movieImage)
@@ -109,18 +109,18 @@ final class MovieDetailsContentView: UIView {
     func showErrorText(_ text: String) {
         errorLabel.isHidden = false
         errorLabel.text = text
-        setVisibleOfViews(isHidden: true)
+        setVisibilityOfViews(isHidden: true)
         retryButton.isHidden = false
     }
     
-    func setActivityViewPresentation(_ active: Bool = false) {
+    func setupActivityViewAnimation(_ active: Bool = false) {
         if active {
-            setVisibleOfViews(isHidden: true)
+            setVisibilityOfViews(isHidden: true)
             retryButton.isHidden = true
             errorLabel.isHidden = true
             activityIndicatorView.startAnimating()
         } else {
-            setVisibleOfViews()
+            setVisibilityOfViews()
             activityIndicatorView.stopAnimating()
         }
     }
@@ -187,7 +187,7 @@ private extension MovieDetailsContentView {
         
     }
     
-    func setVisibleOfViews(isHidden: Bool = false) {
+    func setVisibilityOfViews(isHidden: Bool = false) {
         mainStackView.isHidden = isHidden
         isMovieFavoriteLabel.isHidden = isHidden
         genreLabel.isHidden = isHidden

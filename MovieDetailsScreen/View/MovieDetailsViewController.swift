@@ -35,8 +35,8 @@ final class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         setupViews()
         presenter.didLoad(ui: self) { title in
-            self.callResultOnMain {
-                self.navigationItem.title = title
+            self.callResultOnMain { [weak self] in
+                self?.navigationItem.title = title
             }
         }
     }
@@ -44,26 +44,26 @@ final class MovieDetailsViewController: UIViewController {
 
 extension MovieDetailsViewController: IMovieDetailsViewController {
     func showMovie(_ movie: MovieDetailsModel) {
-        callResultOnMain {
-            self.contentView.fillMovieInfo(with: movie)
+        callResultOnMain { [weak self] in
+            self?.contentView.fillMovieInfo(with: movie)
         }
     }
     
     func showErorr(_ error: String) {
-        callResultOnMain {
-            self.contentView.showErrorText(error)
+        callResultOnMain { [weak self] in
+            self?.contentView.showErrorText(error)
         }
     }
     
     func showLoadingProccess() {
-        callResultOnMain {
-            self.contentView.setActivityViewPresentation(true)
+        callResultOnMain { [weak self] in
+            self?.contentView.setupActivityViewAnimation(true)
         }
     }
     
     func hideLoadingProccess() {
-        callResultOnMain {
-            self.contentView.setActivityViewPresentation()
+        callResultOnMain { [weak self] in
+            self?.contentView.setupActivityViewAnimation()
         }
     }
 }
@@ -75,8 +75,8 @@ private extension MovieDetailsViewController {
     
     @objc func retryLoadingMovie() {
         presenter.didLoad(ui: self) { title in
-            DispatchQueue.main.async {
-                self.navigationItem.title = title
+            DispatchQueue.main.async { [weak self] in
+                self?.navigationItem.title = title
             }
         }
     }
