@@ -18,7 +18,7 @@ protocol IMovieListController: AnyObject {
 class MovieListViewController: UIViewController {
     
     private lazy var contentView = MovieListContentView(delegate: self)
-        
+    
     private lazy var searchController = contentView.searchController
     
     private let presenter: IMovieListPresenter
@@ -58,7 +58,7 @@ private extension MovieListViewController {
         
         contentView.retryButton.addTarget(self, action: #selector(retryLoadingMovies), for: .touchUpInside)
         contentView.showFavoriteMoviesButton.addTarget(self, action: #selector(showFavoriteMoviesButtonTapped), for: .touchUpInside)
-
+        
     }
     
     @objc func retryLoadingMovies() {
@@ -73,34 +73,34 @@ private extension MovieListViewController {
 
 extension MovieListViewController: IMovieListController {
     func showMovies(_ movies: [MovieModel]) {
-        DispatchQueue.main.async {
-            self.contentView.moviesCollectionView.isHidden = false
-            self.contentView.errorLabel.isHidden = true
-            self.contentView.retryButton.isHidden = true
-            self.contentView.collectionViewDataSource?.applySnapshot(with: movies)
+        callResultOnMain { [weak self] in
+            self?.contentView.moviesCollectionView.isHidden = false
+            self?.contentView.errorLabel.isHidden = true
+            self?.contentView.retryButton.isHidden = true
+            self?.contentView.collectionViewDataSource?.applySnapshot(with: movies)
         }
     }
     
     func showError(_ error: String?) {
-        DispatchQueue.main.async {
-            self.contentView.moviesCollectionView.isHidden = true
-            self.contentView.errorLabel.isHidden = false
-            self.contentView.retryButton.isHidden = false
-            self.contentView.activityIndicatorView.isHidden = true
-            self.contentView.activityIndicatorView.stopAnimating()
+        callResultOnMain { [weak self] in
+            self?.contentView.moviesCollectionView.isHidden = true
+            self?.contentView.errorLabel.isHidden = false
+            self?.contentView.retryButton.isHidden = false
+            self?.contentView.activityIndicatorView.isHidden = true
+            self?.contentView.activityIndicatorView.stopAnimating()
             if let error {
-                self.contentView.errorLabel.text = error
+                self?.contentView.errorLabel.text = error
             }
         }
     }
     
     func showLoadingProccess() {
-        DispatchQueue.main.async {
-            self.contentView.activityIndicatorView.isHidden = false
-            self.contentView.activityIndicatorView.startAnimating()
-            self.contentView.moviesCollectionView.isHidden = true
-            self.contentView.errorLabel.isHidden = true
-            self.contentView.retryButton.isHidden = true
+        callResultOnMain { [weak self] in
+            self?.contentView.activityIndicatorView.isHidden = false
+            self?.contentView.activityIndicatorView.startAnimating()
+            self?.contentView.moviesCollectionView.isHidden = true
+            self?.contentView.errorLabel.isHidden = true
+            self?.contentView.retryButton.isHidden = true
         }
     }
     
@@ -117,6 +117,12 @@ extension MovieListViewController: IMovieListController {
     func showStorageError(_ error: String) {
         contentView.errorAlert.message = error
         self.present(contentView.errorAlert, animated: true)
+    }
+    
+    func callResultOnMain(result: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            result()
+        }
     }
     
 }
@@ -146,8 +152,12 @@ extension MovieListViewController:  UISearchBarDelegate {
         }
         let optEncodedText = searchText.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
         guard let encodedText = optEncodedText else { return }
+        
         presenter.searchStartedBy(query: encodedText)
-        let indexPath = IndexPath(row: 0, section: 0)
-        contentView.moviesCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+        
+        if let movies = contentView.collectionViewDataSource?.dataSource?.snapshot().itemIdentifiers, !movies.isEmpty {
+            let indexPath = IndexPath(row: 0, section: 0)
+            contentView.moviesCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+        }
     }
 }

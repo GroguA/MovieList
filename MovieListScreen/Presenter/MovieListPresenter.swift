@@ -35,14 +35,14 @@ extension MovieListPresenter: IMovieListPresenter {
     func didLoad(ui: IMovieListController) {
         self.ui = ui
         self.ui?.showLoadingProccess()
-        interactor.fetchMovies { result in
-            self.ui?.hideLoadingProccess()
+        interactor.fetchMovies { [weak self] result in
+            self?.ui?.hideLoadingProccess()
             switch result {
             case .success(let movies):
-                self.movies = movies
-                self.ui?.showMovies(movies)
+                self?.movies = movies
+                self?.ui?.showMovies(movies)
             case .failure(let error):
-                self.ui?.showError(error.localizedDescription)
+                self?.ui?.showError(error.localizedDescription)
             }
         }
     }
@@ -53,20 +53,20 @@ extension MovieListPresenter: IMovieListPresenter {
     
     func movieDeletedFromFavorite(_ deletedMovie: FavoriteMovieModel) {
         interactor.movieDeletedFromFavorite(deletedMovie)
-        interactor.updateMovies { movies in
-            self.movies = movies
-            self.ui?.showMovies(movies)
+        interactor.updateMovies { [weak self] movies in
+            self?.movies = movies
+            self?.ui?.showMovies(movies)
         }
     }
     
     func moviesScrolled() {
-        interactor.loadMoreMovies { result in
+        interactor.loadMoreMovies { [weak self] result in
             switch result {
             case .success(let movies):
-                self.movies = movies
-                self.ui?.showMovies(movies)
+                self?.movies = movies
+                self?.ui?.showMovies(movies)
             case .failure(let error):
-                self.ui?.showError(error.localizedDescription)
+                self?.ui?.showError(error.localizedDescription)
             }
         }
     }
@@ -74,57 +74,57 @@ extension MovieListPresenter: IMovieListPresenter {
     func movieDisliked(at index: Int) {
         do {
             try interactor.dislikeMovie(at: index)
-            interactor.updateMovies { movies in
-                self.movies = movies
-                self.ui?.showMovies(movies)
+            interactor.updateMovies { [weak self] movies in
+                self?.movies = movies
+                self?.ui?.showMovies(movies)
             }
         } catch CoreDataErrors.runtimeError(let message) {
-            self.ui?.showStorageError(message)
+            ui?.showStorageError(message)
         } catch {
-            self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
+            ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
     }
     
     func movieLiked(at index: Int) {
         do {
             try interactor.likeMovie(at: index)
-            interactor.updateMovies { movies in
-                self.movies = movies
-                self.ui?.showMovies(movies)
+            interactor.updateMovies { [weak self] movies in
+                self?.movies = movies
+                self?.ui?.showMovies(movies)
             }
         } catch CoreDataErrors.runtimeError(let message) {
-            self.ui?.showStorageError(message)
+            ui?.showStorageError(message)
         } catch {
-            self.ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
+            ui?.showError("An unexpected error occurred: \(error.localizedDescription)")
         }
     }
     
     func searchStartedBy(query: String) {
-        interactor.fetchMoviesByQuery(query) { result in
+        interactor.fetchMoviesByQuery(query) { [weak self] result in
             switch result {
             case .success(let movies):
                 if movies.isEmpty {
-                    self.ui?.showError("Such movie not found")
+                    self?.ui?.showError("Such movie not found")
                 }
-                self.movies = movies
-                self.ui?.showMovies(movies)
+                self?.movies = movies
+                self?.ui?.showMovies(movies)
             case .failure(let error):
-                self.ui?.showError(error.localizedDescription)
+                self?.ui?.showError(error.localizedDescription)
             }
         }
     }
     
     func searchStopped() {
         interactor.searchStopped()
-        interactor.updateMovies { movies in
-            self.movies = movies
-            self.ui?.showMovies(movies)
+        interactor.updateMovies { [weak self] movies in
+            self?.movies = movies
+            self?.ui?.showMovies(movies)
         }
     }
     
     func showFavoriteMoviesClicked() {
-        router.showFavoriteMoviesScreen() { deletedMovie in
-            self.movieDeletedFromFavorite(deletedMovie)
+        router.showFavoriteMoviesScreen() { [weak self] deletedMovie in
+            self?.movieDeletedFromFavorite(deletedMovie)
         }
     }
     

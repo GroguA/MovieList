@@ -29,7 +29,8 @@ final class MovieListInteractor {
 
 extension MovieListInteractor: IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
-        serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
+        serviceLocator.networkService.getPopularMovies(page: currentPage) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let movies):
                 let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies).unique()
@@ -47,7 +48,8 @@ extension MovieListInteractor: IMovieListInteractor {
             return
         }
         currentPage += 1
-        serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
+        serviceLocator.networkService.getPopularMovies(page: currentPage) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let movies):
                 let newMovies = self.mapMoviesSchemeToMoviesModel(movies).unique()
@@ -65,7 +67,8 @@ extension MovieListInteractor: IMovieListInteractor {
             return
         }
         isSearching = true
-        serviceLocator.networkService.searchMovieByQuery(query) { result in
+        serviceLocator.networkService.searchMovieByQuery(query) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let movies):
                 let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies)
