@@ -17,7 +17,7 @@ final class FavoriteMoviesViewController: UIViewController {
     var onMovieDeleted: ((FavoriteMovieModel) -> Void)?
     private lazy var contentView = FavoriteMoviesContentView(delegate: self)
     private var presenter: IFavoriteMoviesPresenter
-        
+    
     init(presenter: IFavoriteMoviesPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -30,6 +30,14 @@ final class FavoriteMoviesViewController: UIViewController {
     
     override func loadView() {
         view = contentView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let indexPath = contentView.favoriteMoviesTableView.indexPathForSelectedRow {
+            contentView.favoriteMoviesTableView.deselectRow(at: indexPath, animated: false)
+        }
     }
     
     override func viewDidLoad() {
