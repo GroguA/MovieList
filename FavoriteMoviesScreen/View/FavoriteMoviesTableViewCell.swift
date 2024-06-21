@@ -61,7 +61,7 @@ private extension FavoriteMoviesTableViewCell {
         let constraints = [
             moviePoster.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             moviePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
-            moviePoster.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
+            moviePoster.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -4),
             moviePoster.widthAnchor.constraint(equalTo: moviePoster.heightAnchor, multiplier: 0.75),
             
             movieTitle.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 8),

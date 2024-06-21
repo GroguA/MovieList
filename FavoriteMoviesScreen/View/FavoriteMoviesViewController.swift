@@ -40,12 +40,6 @@ final class FavoriteMoviesViewController: UIViewController {
             self?.onMovieDeleted?(deletedMovie)
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        presenter.onMovieDeleted = nil
-    }
-    
 }
 
 extension FavoriteMoviesViewController: IFavoriteMoviesViewController {
