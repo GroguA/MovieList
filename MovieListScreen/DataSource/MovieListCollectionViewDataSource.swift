@@ -16,11 +16,9 @@ final class MovieListCollectionViewDataSource {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MovieModel>
     
     var dataSource: DataSource?
-    
     var presenter: IMovieListPresenter?
-    
     private var collectionView: UICollectionView
-        
+    
     init(collectionView: UICollectionView) {
         self.collectionView = collectionView
     }

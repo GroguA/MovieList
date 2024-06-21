@@ -29,10 +29,12 @@ final class MovieListInteractor {
 
 extension MovieListInteractor: IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
-        serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
+        serviceLocator.networkService.getPopularMovies(page: currentPage) { [weak self] result in
+            self?.currentPage = 1
+            guard let self else { return }
             switch result {
             case .success(let movies):
-                let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies).unique()
+                let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies)
                 self.moviesBeforeSearchStarted = mappedMovies
                 self.currentMovies = mappedMovies
                 completion(.success(mappedMovies))
@@ -47,12 +49,14 @@ extension MovieListInteractor: IMovieListInteractor {
             return
         }
         currentPage += 1
-        serviceLocator.networkService.getPopularMovies(page: currentPage) { result in
+        serviceLocator.networkService.getPopularMovies(page: currentPage) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let movies):
-                let newMovies = self.mapMoviesSchemeToMoviesModel(movies).unique()
+                let newMovies = self.mapMoviesSchemeToMoviesModel(movies)
                 let mergedMovies = self.currentMovies + newMovies
                 self.currentMovies = mergedMovies
+                self.moviesBeforeSearchStarted = mergedMovies
                 completion(.success(mergedMovies))
             case .failure(let error):
                 completion(.failure(error))
@@ -65,7 +69,8 @@ extension MovieListInteractor: IMovieListInteractor {
             return
         }
         isSearching = true
-        serviceLocator.networkService.searchMovieByQuery(query) { result in
+        serviceLocator.networkService.searchMovieByQuery(query) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let movies):
                 let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies)
