@@ -105,12 +105,12 @@ extension MovieListViewController: IMovieListController {
     }
     
     func hideLoadingProccess() {
-        DispatchQueue.main.async {
-            self.contentView.activityIndicatorView.isHidden = true
-            self.contentView.activityIndicatorView.stopAnimating()
-            self.contentView.moviesCollectionView.isHidden = false
-            self.contentView.errorLabel.isHidden = true
-            self.contentView.retryButton.isHidden = true
+        callResultOnMain { [weak self] in
+            self?.contentView.activityIndicatorView.isHidden = true
+            self?.contentView.activityIndicatorView.stopAnimating()
+            self?.contentView.moviesCollectionView.isHidden = false
+            self?.contentView.errorLabel.isHidden = true
+            self?.contentView.retryButton.isHidden = true
         }
     }
     

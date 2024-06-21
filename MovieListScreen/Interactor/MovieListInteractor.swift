@@ -108,6 +108,7 @@ extension MovieListInteractor: IMovieListInteractor {
     
     func searchStopped() {
         isSearching = false
+        currentPage = 1
         currentMovies = moviesBeforeSearchStarted
     }
     
