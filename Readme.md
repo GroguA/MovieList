@@ -36,7 +36,7 @@ Shows the:
 - is movie favorited.
 
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/movieDetailsScreenLight.png?raw=true" height="400" />
-<img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/movieDetailsScreenDark.png?raw=true" height="400" />
+<img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/moviedetailsScreenDark.png?raw=true" height="400" />
 
 ## Favorites Screen
 
