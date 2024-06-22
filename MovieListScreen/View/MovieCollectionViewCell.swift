@@ -102,7 +102,7 @@ private extension MovieCollectionViewCell {
             moviePoster.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             moviePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             moviePoster.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            moviePoster.bottomAnchor.constraint(equalTo: movieTitle.topAnchor, constant: -4),
+            moviePoster.bottomAnchor.constraint(lessThanOrEqualTo: movieTitle.topAnchor, constant: -4),
             
             movieTitle.leadingAnchor.constraint(equalTo: moviePoster.leadingAnchor, constant: 4),
             movieTitle.trailingAnchor.constraint(equalTo: moviePoster.trailingAnchor),
