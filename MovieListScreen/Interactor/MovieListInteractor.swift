@@ -29,8 +29,8 @@ final class MovieListInteractor {
 extension MovieListInteractor: IMovieListInteractor {
     func fetchMovies(completion: @escaping (Result<[MovieModel], Error>) -> Void) {
         serviceLocator.networkService.getPopularMovies(page: currentPage) { [weak self] result in
-            self?.currentPage = 1
             guard let self else { return }
+            self.currentPage = 1
             switch result {
             case .success(let movies):
                 let mappedMovies = self.mapMoviesSchemeToMoviesModel(movies)
