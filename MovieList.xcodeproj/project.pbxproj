@@ -20,6 +20,8 @@
 		7C03369E2C1B3E8D009BF355 /* MovieListCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03369D2C1B3E8D009BF355 /* MovieListCollectionViewDataSource.swift */; };
 		7C0336A02C1B3FE5009BF355 /* MovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C03369F2C1B3FE5009BF355 /* MovieListInteractor.swift */; };
 		7C0336A42C1B40C5009BF355 /* MovieListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0336A32C1B40C5009BF355 /* MovieListPresenter.swift */; };
+		7C889D242DA580FC00ACA85C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7C889D232DA580FC00ACA85C /* Alamofire */; };
+		7C889D2A2DA5855200ACA85C /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C889D292DA5854E00ACA85C /* Endpoints.swift */; };
 		7CABAA222C1C706500DB98F0 /* MovieListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA212C1C706500DB98F0 /* MovieListAssembly.swift */; };
 		7CABAA272C1CAE7D00DB98F0 /* MovieNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */; };
 		7CABAA292C1CAF3600DB98F0 /* MovieScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA282C1CAF3600DB98F0 /* MovieScheme.swift */; };
@@ -52,6 +54,19 @@
 		7CABAACB2C2600C100DB98F0 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 7CABAACA2C2600C100DB98F0 /* Readme.md */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7C889D282DA5838D00ACA85C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		7C0336702C1B34E1009BF355 /* MovieList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C0336732C1B34E1009BF355 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,6 +83,7 @@
 		7C03369D2C1B3E8D009BF355 /* MovieListCollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		7C03369F2C1B3FE5009BF355 /* MovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListInteractor.swift; sourceTree = "<group>"; };
 		7C0336A32C1B40C5009BF355 /* MovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListPresenter.swift; sourceTree = "<group>"; };
+		7C889D292DA5854E00ACA85C /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		7CABAA212C1C706500DB98F0 /* MovieListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListAssembly.swift; sourceTree = "<group>"; };
 		7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieNetworkService.swift; sourceTree = "<group>"; };
 		7CABAA282C1CAF3600DB98F0 /* MovieScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieScheme.swift; sourceTree = "<group>"; };
@@ -105,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C889D242DA580FC00ACA85C /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +243,7 @@
 		7CABAA252C1CAE5000DB98F0 /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
+				7C889D292DA5854E00ACA85C /* Endpoints.swift */,
 				7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */,
 				7CABAA2A2C1CB45100DB98F0 /* JsonDecoderWrapper.swift */,
 				7CABAA2C2C1CC8F100DB98F0 /* ImageDownloader.swift */,
@@ -404,6 +422,7 @@
 				7C03366C2C1B34E1009BF355 /* Sources */,
 				7C03366D2C1B34E1009BF355 /* Frameworks */,
 				7C03366E2C1B34E1009BF355 /* Resources */,
+				7C889D282DA5838D00ACA85C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -438,6 +457,9 @@
 				Base,
 			);
 			mainGroup = 7C0336672C1B34E1009BF355;
+			packageReferences = (
+				7C889D222DA580FC00ACA85C /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 7C0336712C1B34E1009BF355 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -492,6 +514,7 @@
 				7CABAA6D2C230B5E00DB98F0 /* MovieDetailsResponceScheme.swift in Sources */,
 				7CABAAC92C24658300DB98F0 /* FavoriteMoviesRouter.swift in Sources */,
 				7CABAA3F2C1E151300DB98F0 /* ServiceLocator.swift in Sources */,
+				7C889D2A2DA5855200ACA85C /* Endpoints.swift in Sources */,
 				7CABAA602C23044100DB98F0 /* MovieDetailsContentView.swift in Sources */,
 				7C0336992C1B3D80009BF355 /* MovieCollectionViewCell.swift in Sources */,
 				7CABAA272C1CAE7D00DB98F0 /* MovieNetworkService.swift in Sources */,
@@ -655,6 +678,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -686,6 +710,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -725,6 +750,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7C889D222DA580FC00ACA85C /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7C889D232DA580FC00ACA85C /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C889D222DA580FC00ACA85C /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		7C03367C2C1B34E1009BF355 /* MovieList.xcdatamodeld */ = {
