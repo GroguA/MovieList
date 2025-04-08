@@ -39,10 +39,14 @@ final class FavoriteMoviesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func fillCell(with movie: FavoriteMovieModel) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
         moviePoster.image = nil
         movieTitle.text = nil
-        
+    }
+    
+    func fillCell(with movie: FavoriteMovieModel) {
         movieTitle.text = movie.title
         serviceLocator.imageDownloader.fetchImage(pathToImage: movie.pathToImage, imageView: moviePoster)
     }
@@ -59,9 +63,9 @@ private extension FavoriteMoviesTableViewCell {
     
     func setConstraints() {
         let constraints = [
-            moviePoster.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+            moviePoster.heightAnchor.constraint(equalToConstant: 125),
+            moviePoster.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             moviePoster.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
-            moviePoster.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -4),
             moviePoster.widthAnchor.constraint(equalTo: moviePoster.heightAnchor, multiplier: 0.75),
             
             movieTitle.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 8),

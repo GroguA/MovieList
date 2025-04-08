@@ -32,9 +32,7 @@ final class MovieCollectionViewCell: UICollectionViewCell {
         let image = UIImageView(frame: .zero)
         image.tintColor = .red
         image.translatesAutoresizingMaskIntoConstraints = false
-        let likeTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dislikedImageTapped))
         image.isUserInteractionEnabled = true
-        image.addGestureRecognizer(likeTapGestureRecognizer)
         return image
     }()
     
@@ -42,9 +40,7 @@ final class MovieCollectionViewCell: UICollectionViewCell {
         let image = UIImageView(frame: .zero)
         image.tintColor = .red
         image.translatesAutoresizingMaskIntoConstraints = false
-        let dislikeTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(likedImageTapped))
         image.isUserInteractionEnabled = true
-        image.addGestureRecognizer(dislikeTapGestureRecognizer)
         return image
     }()
     
@@ -63,6 +59,25 @@ final class MovieCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        moviePoster.image = nil
+        
+        likeImage.isHidden = false
+        dislikeImage.isHidden = true
+        likeImage.image = nil
+        dislikeImage.image = nil
+        
+        likeImage.gestureRecognizers?.forEach { likeImage.removeGestureRecognizer($0) }
+        dislikeImage.gestureRecognizers?.forEach { dislikeImage.removeGestureRecognizer($0) }
+        
+        movieTitle.text = nil
+        
+        dislikeAction = nil
+        likeAction = nil
+    }
+    
     func fillCell(
         with movie: MovieModel,
         onLikeButtonClicked: @escaping () -> Void,
@@ -79,9 +94,8 @@ final class MovieCollectionViewCell: UICollectionViewCell {
             dislikeImage.isHidden = false
         }
         
-        likeImage.image = nil
-        dislikeImage.image = nil
-        moviePoster.image = nil
+        addGestureRecognizers()
+        
         movieTitle.text = movie.title
         likeImage.image = UIImage(systemName: movie.likeIconPath)
         dislikeImage.image = UIImage(systemName: movie.dislikeIconPath)
@@ -121,6 +135,14 @@ private extension MovieCollectionViewCell {
         
         NSLayoutConstraint.activate(constraints)
         
+    }
+    
+    func addGestureRecognizers() {
+        let dislikeTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(likedImageTapped))
+        dislikeImage.addGestureRecognizer(dislikeTapGestureRecognizer)
+        
+        let likeTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dislikedImageTapped))
+        likeImage.addGestureRecognizer(likeTapGestureRecognizer)
     }
     
     @objc func dislikedImageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
