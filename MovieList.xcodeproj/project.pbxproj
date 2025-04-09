@@ -23,6 +23,8 @@
 		7C889D242DA580FC00ACA85C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7C889D232DA580FC00ACA85C /* Alamofire */; };
 		7C889D2A2DA5855200ACA85C /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C889D292DA5854E00ACA85C /* Endpoints.swift */; };
 		7C889D2D2DA590D100ACA85C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 7C889D2C2DA590D100ACA85C /* Kingfisher */; };
+		7C889D302DA6AEDD00ACA85C /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 7C889D2F2DA6AEDD00ACA85C /* Swinject */; };
+		7C889D332DA6AF3400ACA85C /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C889D322DA6AF2F00ACA85C /* DIContainer.swift */; };
 		7CABAA222C1C706500DB98F0 /* MovieListAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA212C1C706500DB98F0 /* MovieListAssembly.swift */; };
 		7CABAA272C1CAE7D00DB98F0 /* MovieNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */; };
 		7CABAA292C1CAF3600DB98F0 /* MovieScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CABAA282C1CAF3600DB98F0 /* MovieScheme.swift */; };
@@ -85,6 +87,7 @@
 		7C03369F2C1B3FE5009BF355 /* MovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListInteractor.swift; sourceTree = "<group>"; };
 		7C0336A32C1B40C5009BF355 /* MovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListPresenter.swift; sourceTree = "<group>"; };
 		7C889D292DA5854E00ACA85C /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
+		7C889D322DA6AF2F00ACA85C /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		7CABAA212C1C706500DB98F0 /* MovieListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListAssembly.swift; sourceTree = "<group>"; };
 		7CABAA262C1CAE7D00DB98F0 /* MovieNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieNetworkService.swift; sourceTree = "<group>"; };
 		7CABAA282C1CAF3600DB98F0 /* MovieScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieScheme.swift; sourceTree = "<group>"; };
@@ -124,6 +127,7 @@
 			files = (
 				7C889D2D2DA590D100ACA85C /* Kingfisher in Frameworks */,
 				7C889D242DA580FC00ACA85C /* Alamofire in Frameworks */,
+				7C889D302DA6AEDD00ACA85C /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +161,7 @@
 		7C0336722C1B34E1009BF355 /* MovieList */ = {
 			isa = PBXGroup;
 			children = (
+				7C889D312DA6AF1F00ACA85C /* DIContainer */,
 				7C0336732C1B34E1009BF355 /* AppDelegate.swift */,
 				7C0336752C1B34E1009BF355 /* SceneDelegate.swift */,
 				7C03367F2C1B34E4009BF355 /* Assets.xcassets */,
@@ -224,6 +229,14 @@
 				7C0336A32C1B40C5009BF355 /* MovieListPresenter.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		7C889D312DA6AF1F00ACA85C /* DIContainer */ = {
+			isa = PBXGroup;
+			children = (
+				7C889D322DA6AF2F00ACA85C /* DIContainer.swift */,
+			);
+			path = DIContainer;
 			sourceTree = "<group>";
 		};
 		7CABAA232C1CAD9800DB98F0 /* DataSource */ = {
@@ -462,6 +475,7 @@
 			packageReferences = (
 				7C889D222DA580FC00ACA85C /* XCRemoteSwiftPackageReference "Alamofire" */,
 				7C889D2B2DA590D100ACA85C /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				7C889D2E2DA6AEDD00ACA85C /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			productRefGroup = 7C0336712C1B34E1009BF355 /* Products */;
 			projectDirPath = "";
@@ -519,6 +533,7 @@
 				7CABAA3F2C1E151300DB98F0 /* ServiceLocator.swift in Sources */,
 				7C889D2A2DA5855200ACA85C /* Endpoints.swift in Sources */,
 				7CABAA602C23044100DB98F0 /* MovieDetailsContentView.swift in Sources */,
+				7C889D332DA6AF3400ACA85C /* DIContainer.swift in Sources */,
 				7C0336992C1B3D80009BF355 /* MovieCollectionViewCell.swift in Sources */,
 				7CABAA272C1CAE7D00DB98F0 /* MovieNetworkService.swift in Sources */,
 				7C03367E2C1B34E1009BF355 /* MovieList.xcdatamodeld in Sources */,
@@ -771,6 +786,14 @@
 				minimumVersion = 8.3.1;
 			};
 		};
+		7C889D2E2DA6AEDD00ACA85C /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -783,6 +806,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7C889D2B2DA590D100ACA85C /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		7C889D2F2DA6AEDD00ACA85C /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7C889D2E2DA6AEDD00ACA85C /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
 		};
 /* End XCSwiftPackageProductDependency section */
 

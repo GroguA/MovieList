@@ -9,10 +9,6 @@ import UIKit
 
 enum MovieListAssembly {
     static func createMovieListModule(with navigationController: UINavigationController) -> UIViewController {
-        let interactor = MovieListInteractor()
-        let router = MovieListRouter(navigationController: navigationController)
-        let presenter = MovieListPresenter(interactor: interactor, router: router)
-        let view = MovieListViewController(presenter: presenter)
-        return view
+        return DIContainer.shared.container.resolve(MovieListViewController.self, argument: navigationController)!
     }
 }

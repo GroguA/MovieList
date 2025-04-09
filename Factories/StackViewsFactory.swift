@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class StackViewsFactory {
+enum StackViewsFactory {
     static func createStackView(with arrangedSubviews: [UIView], isVertical: Bool = true) -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
         stackView.alignment = .fill

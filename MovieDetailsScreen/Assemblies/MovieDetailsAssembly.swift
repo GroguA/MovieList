@@ -8,10 +8,7 @@
 import Foundation
 
 enum MovieDetailsAssembly {
-    static func createMovieDetailsModule(with movieId: Int) -> MovieDetailsViewController {
-        let interactor = MovieDetailsInteractor(movieId: movieId)
-        let presenter = MovieDetailsPresenter(interactor: interactor)
-        let view = MovieDetailsViewController(presenter: presenter)
-        return view
+    static func createMovieDetailsModule(_ movieId: Int) -> MovieDetailsViewController {
+        return DIContainer.shared.container.resolve(MovieDetailsViewController.self, argument: movieId)!
     }
 }
