@@ -19,7 +19,7 @@ final class FavoriteMoviesRouter: IFavoriteMoviesRouter {
     }
     
     func showMovieDetailsScreen(movieId: Int) {
-        let viewController = MovieDetailsAssembly.createMovieDetailsModule(with: movieId)
+        let viewController = MovieDetailsAssembly.createMovieDetailsModule(movieId)
         navigationController.pushViewController(viewController, animated: true)
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class LabelsFactory {
+enum LabelsFactory {
     static func createLabel(with text: String? = nil, isTextBold: Bool = false, isCenterAlignment: Bool = false) -> UILabel {
         let label = UILabel()
         label.numberOfLines = 0
@@ -17,5 +17,4 @@ final class LabelsFactory {
         label.textAlignment = isCenterAlignment ? .center : .natural
         return label
     }
-    
 }

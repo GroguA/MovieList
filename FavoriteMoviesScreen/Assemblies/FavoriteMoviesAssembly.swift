@@ -9,10 +9,6 @@ import UIKit
 
 enum FavoriteMoviesAssembly {
     static func createFavoriteMoviesModule(with navigationController: UINavigationController) -> FavoriteMoviesViewController {
-        let interactor = FavoriteMoviesInteractor()
-        let router = FavoriteMoviesRouter(navigationController: navigationController)
-        let presenter = FavoriteMoviesPresenter(interactor: interactor, router: router)
-        let view = FavoriteMoviesViewController(presenter: presenter)
-        return view
+        return DIContainer.shared.container.resolve(FavoriteMoviesViewController.self, argument: navigationController)!
     }
 }
