@@ -13,9 +13,13 @@ The app is built using the VIPER architecture for modular and scalable developme
 ## Movie List Screen
 
 Displays a collection of popular movies fetched from an API.
+
 Allows users to like or dislike movies. 
+
 Liked movies are saved locally using CoreData.
+
 Includes a global search feature to search for movies by title across the API.
+
 Provides navigation to the favorites screen to view saved movies.
 
 <img src="https://github.com/GroguA/MovieList/blob/main/movieListScreens/movieListScreenLight.png?raw=true" height="400" />
@@ -54,9 +58,13 @@ Router.
 This architecture separates concerns and promotes maintainability and testability of the codebase.
 
 View: Responsible for displaying data to the user and capturing user interactions.
+
 Interactor: Contains business logic related to fetching and manipulating data.
+
 Presenter: Mediates between the view and the interactor, formatting data for display and reacting to user inputs.
+
 Entity: Represents data objects used by the interactor.
+
 Router: Handles navigation between different screens/modules within the app.
 
 # Technologies Used
