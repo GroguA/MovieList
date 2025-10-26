@@ -62,14 +62,20 @@ Router: Handles navigation between different screens/modules within the app.
 # Technologies Used
 
 URLSession: Used for network requests to fetch movie data from the API.
+
 AutoLayout: Used for defining the layout constraints programmatically to ensure the app's user interface adapts to
 various screen sizes and orientations.
+
 CoreData: Utilized for local storage of favorite movies.
+
 UIKit: Provides fundamental components and controls for building the user interface.
+
 DiffableDataSource: Implemented for both UICollectionView and UITableView to efficiently manage and update
 data-driven UI components.
+
 Service Locator: Used to manage and provide access to various services across the app, promoting loose coupling and
 flexibility.
+
 Factory Pattern: Implemented to manage the creation of various components or services in a centralized manner,
 enhancing modularity and reducing dependencies.
 
